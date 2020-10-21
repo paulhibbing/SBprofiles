@@ -1,5 +1,5 @@
 ---
-title: "SBprofiles"
+title: "How to Use The Sedentary Profiles"
 output: rmarkdown::pdf_document
 vignette: >
   %\VignetteIndexEntry{SBprofiles}
