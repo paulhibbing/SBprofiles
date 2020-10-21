@@ -1,0 +1,15 @@
+Package: SBprofiles
+Type: Package
+Title: Learn about and use sedentary behavior profiles
+Version: 0.1.0.9000
+Authors@R: c(
+    person(c("Paul", "R."), "Hibbing", email = "paulhibbing@gmail.com",
+		  role = c("aut","cre")),
+    person("Children's Mercy Kansas City", role = "cph"))
+Description: Provides code to replicate the original analyses, as well
+    as information to facilitate using the profiles in your own research.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+URL: https://github.com/paulhibbing/SBprofiles
+BugReports: https://github.com/paulhibbing/SBprofiles/issues
