@@ -5,7 +5,7 @@ when writing our manuscript. This is not intended to help you implement
 the profiles, just to understand how they were developed. For usage help,
 see the
 [root SBprofiles README](https://github.com/paulhibbing/SBprofiles/blob/master/README.md)
-and [vignette](https://github.com/paulhibbing/SBprofiles/blob/master/vignettes/SBprofiles.rmd).
+and [vignette](https://github.com/paulhibbing/SBprofiles/blob/master/vignettes/SBprofiles.pdf).
 
 **NOTE:** If you plan to replicate this code, you will need to make sure you
   have several packages installed. The following code should cover it, but
