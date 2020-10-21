@@ -12,8 +12,11 @@
 #'
 #' @examples
 #' data(example_data, package = "SBprofiles")
-#' get_profile(example_data)
+#' get_profile(example_data, counts = "PAXINTEN")
 get_profile <- function(object, ...) {
+
+  requireNamespace("tree", quietly = TRUE)
+  requireNamespace("randomForest", quietly = TRUE)
 
   UseMethod("get_profile", object)
 
@@ -30,16 +33,16 @@ get_profile.bout <- function(
 
   if (inherits(object, "bout1")) {
 
-    dt <- predict(.$tree1, object, "class")
+    dt <- stats::predict(.$tree1, object, "class")
     rf <-
-      predict(.$forest1, object) %>%
+      stats::predict(.$forest1, object) %>%
       unname(.)
 
   } else if (inherits(object, "bout5")) {
 
-    dt <- predict(.$tree5, object, "class")
+    dt <- stats::predict(.$tree5, object, "class")
     rf <-
-      predict(.$forest5, object) %>%
+      stats::predict(.$forest5, object) %>%
       unname(.)
 
   } else {
@@ -120,7 +123,7 @@ get_profile.data.frame = function(
 
 }
 
-# Helper functions --------------------------------------------------------
+# Helper function(s) -------------------------------------------------------
 
   id_verify <- function(id, object) {
 

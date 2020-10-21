@@ -44,5 +44,5 @@ Implement the sedentary profiles
 }
 \examples{
 data(example_data, package = "SBprofiles")
-get_profile(example_data)
+get_profile(example_data, counts = "PAXINTEN")
 }

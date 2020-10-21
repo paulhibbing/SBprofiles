@@ -67,7 +67,7 @@ sb_bout_dist <- function(
   ## Assemble features
 
     bouts$lengths %>%
-    quantile(probs = probs) %>%
+    stats::quantile(probs = probs) %>%
     t(.) %>%
     data.frame(.) %>%
     stats::setNames(
