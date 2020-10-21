@@ -1,17 +1,18 @@
-#' Retrieve non-wear information for an NHANES accelerometer data file
+#' Retrieve wear information for an NHANES accelerometer data file
 #'
 #' This is a wrapper around \code{PhysicalActivity::wearingMarking} that takes
 #' into account the non-POSIX formatting of NHANES timestamps
 #'
 #' @param counts vector of count values (minute-by-minute)
 #'
-#' @return a vector of wear time information
+#' @return a vector of wear time information (\code{TRUE} means wearing and
+#'   \code{FALSE} means not wearing)
 #' @export
 #'
 #' @examples
 #' data(example_data, package = "SBprofiles")
-#' nhanes_nonwear(example_data$PAXINTEN)
-nhanes_nonwear <- function(counts) {
+#' nhanes_wear(example_data$PAXINTEN)
+nhanes_wear <- function(counts) {
 
   invisible(utils::capture.output(
 

@@ -16,6 +16,11 @@
 #' @export
 #'
 #' @examples
+#' data(example_data, package = "SBprofiles")
+#' sb_bout_dist(
+#'   is_sb = example_data$PAXINTEN <= 100,
+#'   is_wear = nhanes_wear(example_data$PAXINTEN)
+#' )
 sb_bout_dist <- function(
   is_sb, is_wear, min_bout = 5, valid_indices = NULL,
   probs = c(
@@ -84,6 +89,8 @@ sb_bout_dist <- function(
       bouts_weartime = n_bouts / total_wear_min
       SB_perc = total_SB_raw / total_wear_min
     }) %>%
-    structure(., class = append(class(.), paste0("bout", min_bout), 0))
+    structure(
+      ., class = append(class(.), c("bout", paste0("bout", min_bout)), 0)
+    )
 
 }

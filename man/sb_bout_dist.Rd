@@ -35,3 +35,10 @@ A bout object (data frame of distribution features)
 \description{
 Extract features to summarize a participant's bout duration distribution
 }
+\examples{
+data(example_data, package = "SBprofiles")
+sb_bout_dist(
+  is_sb = example_data$PAXINTEN <= 100,
+  is_wear = nhanes_wear(example_data$PAXINTEN)
+)
+}

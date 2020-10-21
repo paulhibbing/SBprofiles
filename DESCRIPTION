@@ -20,7 +20,9 @@ Suggests:
     usethis
 Imports: 
     magrittr,
-    utils
+    utils,
+    tree,
+    randomForest
 RoxygenNote: 7.1.1
 Depends: 
     R (>= 2.10)
