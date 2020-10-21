@@ -14,4 +14,8 @@ LazyData: true
 URL: https://github.com/paulhibbing/SBprofiles
 BugReports: https://github.com/paulhibbing/SBprofiles/issues
 Suggests: 
-    rmarkdown
+    rmarkdown,
+    AGread
+Imports: 
+    magrittr
+RoxygenNote: 7.1.1
