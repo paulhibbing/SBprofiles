@@ -45,4 +45,12 @@ Implement the sedentary profiles
 \examples{
 data(example_data, package = "SBprofiles")
 get_profile(example_data, counts = "PAXINTEN")
+get_profile(
+  example_data, counts = "PAXINTEN", method = "randomForest"
+)
+get_profile(example_data, id = "PAXDAY", counts = "PAXINTEN")
+get_profile(
+  example_data, id = "PAXDAY",
+  counts = "PAXINTEN", method = "decisionTree"
+)
 }

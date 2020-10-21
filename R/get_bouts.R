@@ -1,5 +1,6 @@
 #' Extract features to summarize a participant's bout duration distribution
 #'
+#' @param df data frame input (for vectorized operations)
 #' @param is_sb logical vector reflecting minute-by-minute classifications
 #'   (\code{TRUE} for sedentary behavior and \code{FALSE} for non-sedentary
 #'   behavior)
@@ -13,6 +14,8 @@
 #'   between 0 and 1)
 #'
 #' @return A bout object (data frame of distribution features)
+#' @inheritParams get_profile
+#'
 #' @export
 #'
 #' @examples
@@ -21,13 +24,40 @@
 #'   is_sb = example_data$PAXINTEN <= 100,
 #'   is_wear = nhanes_wear(example_data$PAXINTEN)
 #' )
+#' sb_bout_dist(
+#'   example_data, id = "PAXDAY", counts = "PAXINTEN"
+#' )
 sb_bout_dist <- function(
-  is_sb, is_wear, min_bout = 5, valid_indices = NULL,
+  df = NULL, is_sb, is_wear, min_bout = 5,
+  valid_indices = NULL, id = NULL, counts, sb = 100,
   probs = c(
     0.1, 0.2, 0.25,
     seq(0.3, 0.7, 0.1),
     0.75, 0.8, 0.9
   )
+) {
+
+  if (is.null(df)) {
+
+    sb_bout_dist_default(
+      is_sb, is_wear, min_bout, valid_indices, probs
+    )
+
+  } else {
+
+    sb_bout_dist_df(
+      df, counts, id, sb, min_bout, valid_indices, probs
+    )
+
+  }
+
+}
+
+#' @rdname internal_functions
+#' @inheritParams sb_bout_dist
+#' @keywords internal
+sb_bout_dist_default <- function(
+  is_sb, is_wear, min_bout, valid_indices, probs
 ) {
 
   ## Determine all SB bouts
@@ -90,7 +120,38 @@ sb_bout_dist <- function(
       SB_perc = total_SB_raw / total_wear_min
     }) %>%
     structure(
-      ., class = append(class(.), c("bout", paste0("bout", min_bout)), 0)
+      .,
+      class = append(
+        class(.),
+        c("bout", paste0("bout", min_bout)),
+        0
+      )
     )
+
+}
+
+#' @rdname internal_functions
+#' @inheritParams sb_bout_dist
+#' @keywords internal
+sb_bout_dist_df <- function(
+  df, counts, id, sb, min_bout, valid_indices, probs
+) {
+
+  df %>%
+  counts_verify(counts) %>%
+  id_verify(id) %>%
+  lapply(
+    function(x, sb, min_bout, valid_indices, probs) {
+      sb_bout_dist_default(
+        is_sb = x$counts <= sb,
+        is_wear = nhanes_wear(x$counts),
+        min_bout = min_bout,
+        valid_indices = valid_indices,
+        probs = probs
+      )},
+    sb, min_bout, valid_indices, probs
+  ) %>%
+  do.call(rbind, .) %>%
+  id_bind(id)
 
 }

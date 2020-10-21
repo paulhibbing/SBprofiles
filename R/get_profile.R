@@ -13,6 +13,14 @@
 #' @examples
 #' data(example_data, package = "SBprofiles")
 #' get_profile(example_data, counts = "PAXINTEN")
+#' get_profile(
+#'   example_data, counts = "PAXINTEN", method = "randomForest"
+#' )
+#' get_profile(example_data, id = "PAXDAY", counts = "PAXINTEN")
+#' get_profile(
+#'   example_data, id = "PAXDAY",
+#'   counts = "PAXINTEN", method = "decisionTree"
+#' )
 get_profile <- function(object, ...) {
 
   requireNamespace("tree", quietly = TRUE)
@@ -81,37 +89,18 @@ get_profile.data.frame = function(
 
   method <- match.arg(method)
 
-  if (!counts %in% names(object)) {
-
-    stop(
-      "`counts` must be a column name in `object`",
-      call. = FALSE
-    )
-
-  } else {
-
-    names(object) %<>% {ifelse(. == counts, "counts", .)}
-
-  }
-
-  if (!is.null(id)) {
-
-    id %<>% id_verify(object)
-    object %<>% split(object[ ,id])
-
-  } else {
-
-    object %<>% list(.)
-
-  }
+  object %<>%
+    counts_verify(counts) %>%
+    id_verify(id)
 
   lapply(object, function(x, sb, ...) {
-    sb_bout_dist(
-      x$counts <= sb,
-      nhanes_wear(x$counts),
-      ...
-    )
-  }, sb, ...) %>%
+      sb_bout_dist(
+        df = NULL,
+        is_sb = x$counts <= sb,
+        is_wear = nhanes_wear(x$counts),
+        ...
+      )
+    }, sb, ...) %>%
   lapply(get_profile, method) %>%
   lapply(function(x, method) {
     if (length(x) > 1)
@@ -119,13 +108,18 @@ get_profile.data.frame = function(
     else
       stats::setNames(data.frame(x), method)
   }, method) %>%
-  do.call(rbind, .)
+  do.call(rbind, .) %>%
+  id_bind(id)
 
 }
 
-# Helper function(s) -------------------------------------------------------
+# Helper functions ---------------------------------------------------------
 
-  id_verify <- function(id, object) {
+#' @rdname internal_functions
+#' @keywords internal
+id_verify <- function(object, id) {
+
+  if (!is.null(id)) {
 
     if (!all(
       is.character(id),
@@ -139,6 +133,62 @@ get_profile.data.frame = function(
       )
     }
 
-    id
+    object %<>%
+      split(object[ ,id]) %>%
+      stats::setNames(
+        ., sapply(., function(x, id) unique(x[ ,id]), id)
+      )
+
+  } else {
+
+    object %<>% list(.)
 
   }
+
+  object
+
+}
+
+#' @rdname internal_functions
+#' @keywords internal
+counts_verify <- function(object, counts) {
+
+  if (!counts %in% names(object)) {
+
+    stop(
+      "`counts` must be a column name in `object`",
+      call. = FALSE
+    )
+
+  } else {
+
+    names(object) %<>% {ifelse(. == counts, "counts", .)}
+
+  }
+
+  object
+
+}
+
+#' @rdname internal_functions
+#' @param result an output data frame that may need id-based formatting
+#' @keywords internal
+id_bind <- function(result, id) {
+
+  if (!is.null(id)) {
+
+    data.frame(
+      variable = row.names(result),
+      result,
+      stringsAsFactors = FALSE,
+      row.names = NULL
+    ) %>%
+    stats::setNames(., gsub("^variable$", id, names(.)))
+
+  } else {
+
+    result
+
+  }
+
+}

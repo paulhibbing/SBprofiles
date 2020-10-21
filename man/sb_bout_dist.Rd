@@ -5,14 +5,20 @@
 \title{Extract features to summarize a participant's bout duration distribution}
 \usage{
 sb_bout_dist(
+  df = NULL,
   is_sb,
   is_wear,
   min_bout = 5,
   valid_indices = NULL,
+  id = NULL,
+  counts,
+  sb = 100,
   probs = c(0.1, 0.2, 0.25, seq(0.3, 0.7, 0.1), 0.75, 0.8, 0.9)
 )
 }
 \arguments{
+\item{df}{data frame input (for vectorized operations)}
+
 \item{is_sb}{logical vector reflecting minute-by-minute classifications
 (\code{TRUE} for sedentary behavior and \code{FALSE} for non-sedentary
 behavior)}
@@ -25,6 +31,14 @@ classifications (\code{TRUE} for wearing and \code{FALSE} for not wearing)}
 \item{valid_indices}{integer vector (optional) specifying which indices of
 \code{is_sb} and {is_wear} correspond to valid measurement days (e.g. with
 10+ hours of wear time on 4+ days)}
+
+\item{id}{character scalar (optional). Column name on which to divide
+\code{object} (if a data frame) into a list of separate objects}
+
+\item{counts}{character scalar. Column name of the variable to use when
+classifying sedentary behavior}
+
+\item{sb}{integer. The cut point to use for classifying sedentary behavior}
 
 \item{probs}{numeric vector. Percentiles to calculate (all values must be
 between 0 and 1)}
@@ -40,5 +54,8 @@ data(example_data, package = "SBprofiles")
 sb_bout_dist(
   is_sb = example_data$PAXINTEN <= 100,
   is_wear = nhanes_wear(example_data$PAXINTEN)
+)
+sb_bout_dist(
+  example_data, id = "PAXDAY", counts = "PAXINTEN"
 )
 }
