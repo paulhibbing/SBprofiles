@@ -1,0 +1,13 @@
+Description,C,D,merged
+Demographics,0_Input/DEMO_C.XPT,0_Input/DEMO_D.XPT,0_Input/rds/demographic.rds
+Blood pressure,0_Input/BPX_C.XPT,0_Input/BPX_D.XPT,0_Input/rds/blood_pressure.rds
+Body measures,0_Input/BMX_C.XPT,0_Input/BMX_D.XPT,0_Input/rds/body_measures.rds
+Glycohemoglobin,0_Input/L10_C.XPT,0_Input/GHB_D.XPT,0_Input/rds/glycohemoglobin.rds
+LDL/triglycerides,0_Input/L13AM_C.XPT,0_Input/TRIGLY_D.XPT,0_Input/rds/ldl_triglycerides.rds
+Pregnancy,0_Input/UC_C.XPT,0_Input/UCPREG_D.XPT,0_Input/rds/pregnancy.rds
+Total cholesterol/HDL,0_Input/L13_C.XPT,"0_Input/HDL_D.XPT, 0_Input/TCHOL_D.XPT",0_Input/rds/cholesterol_hdl.rds
+Activity monitor,0_Input/paxraw_c.xpt,0_Input/paxraw_d.xpt,0_Input/rds/activity_monitor.rds
+Diabetes,0_Input/DIQ_C.XPT,0_Input/DIQ_D.XPT,0_Input/rds/diabetes.rds
+Smoking,0_Input/SMQ_C.XPT,0_Input/SMQ_D.XPT,0_Input/rds/smoking.rds
+Hypertension,0_Input/BPQ_C.XPT,0_Input/BPQ_D.XPT,0_Input/rds/hypertension.rds
+Medical,0_Input/MCQ_C.XPT,0_Input/MCQ_D.XPT,0_Input/rds/medical.rds
