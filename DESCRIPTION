@@ -13,3 +13,5 @@ Encoding: UTF-8
 LazyData: true
 URL: https://github.com/paulhibbing/SBprofiles
 BugReports: https://github.com/paulhibbing/SBprofiles/issues
+Suggests: 
+    rmarkdown
