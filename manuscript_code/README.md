@@ -3,7 +3,7 @@
 This is the part of `SBprofiles` where you will find the code we used
 when writing our manuscript. This is not intended to help you implement
 the profiles, just to understand how they were developed. For usage help,
-see the [vignette](https://github.com/paulhibbing/SBprofiles/blob/master/vignettes/SBprofiles.pdf).
+see the [vignette](https://github.com/paulhibbing/SBprofiles/blob/main/vignettes/SBprofiles.pdf).
 
 **NOTE:** If you plan to replicate this code, you will need to make sure you
   have several packages installed. The following code should cover it, but
