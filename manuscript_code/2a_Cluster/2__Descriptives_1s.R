@@ -1,12 +1,17 @@
 rm(list = ls())
 library(magrittr)
 
+rstudioapi::getActiveDocumentContext()$path %>%
+dirname(.) %>%
+dirname(.) %>%
+setwd(.)
+
 d <- readRDS("2a_Cluster/rds/clustered_d_1s.rds")
 
 source("2a_Cluster/zz_features.R")
 
 descriptives <- function(d, label, variables) {
-  
+
   d[ ,variables] %>%
   sapply(function(x) {
     ifelse(mean(x) < 1, 3, 1) %>%
@@ -17,7 +22,7 @@ descriptives <- function(d, label, variables) {
   do.call(rbind, .) %>%
   data.frame(stringsAsFactors = FALSE) %>%
   stats::setNames(label)
-  
+
 }
 
 split(d, d$cluster) %>%

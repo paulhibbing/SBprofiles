@@ -4,6 +4,11 @@
   library(magrittr)
   source("2b_Epi/zz_functions.R")
 
+  rstudioapi::getActiveDocumentContext()$path %>%
+  dirname(.) %>%
+  dirname(.) %>%
+  setwd(.)
+
   d <- readRDS("2b_Epi/0_Epi_data_1s.rds")
 
   M1 <- NULL
@@ -12,7 +17,7 @@
 
   ## This is why we should not adjust for sex (and same concept applies to age):
   # > table(d$high_risk, d$sex)
-  # 
+  #
   #       Male   Female
   # FALSE  1326    1757
   # TRUE    647     230 <--- Being female is highly predictive of whether a
@@ -22,7 +27,7 @@
   #                        already been accounted for when determining the
   #                        outcome variable, and it would confound the model to
   #                        then also include it as a covariate.
-  
+
 # Implementation ----------------------------------------------------------
 
   d %>%

@@ -2,8 +2,15 @@
 
   rm(list = ls())
   library(magrittr)
-  
-  clustering <- readRDS("2a_Cluster/rds/clustered_d.rds")
+
+  rstudioapi::getActiveDocumentContext()$path %>%
+  dirname(.) %>%
+  dirname(.) %>%
+  setwd(.)
+
+  clustering <-
+    readRDS("2a_Cluster/rds/clustered_d.rds") %>%
+    within({weight_status = sapply(bmi, PAutilities::weight_status)})
   cvd <- readRDS("2b_Epi/0_Epi_data.rds")
 
 # Functions ---------------------------------------------------------------
@@ -24,7 +31,7 @@
     }) %>%
     rbind(data.frame(varname = label, n_perc = NA), .)
   }
-  
+
   get_characteristics.numeric <- function(x, label, ...) {
     ifelse(mean(x, na.rm = TRUE) < 1, 3, 1) %>%
     PAutilities::mean_sd(
@@ -35,16 +42,16 @@
       varname = label, n_perc = ., stringsAsFactors = FALSE
     )
   }
-  
+
   get_characteristics.logical <- function(x, label, ...) {
     factor(x, c("FALSE", "TRUE")) %>%
     get_characteristics(label)
   }
-  
+
   get_characteristics.default <- function(x, label, ...) {
     NULL
   }
-  
+
   wrapper <- function(d) {
     as.list(d) %>%
     mapply(
@@ -58,8 +65,7 @@
 # Implementation ----------------------------------------------------------
 
   wrapper(clustering) %>%
-  data.table::fwrite("zz_tables/0b_clustering.csv")
-  
+  data.table::fwrite("3_Other/0b_clustering.csv")
+
   wrapper(cvd) %>%
-  data.table::fwrite("zz_tables/0c_cvd.csv")
-  
+  data.table::fwrite("3_Other/0c_cvd.csv")

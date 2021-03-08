@@ -3,8 +3,13 @@
   rm(list = ls())
   library(magrittr)
 
+  rstudioapi::getActiveDocumentContext()$path %>%
+  dirname(.) %>%
+  dirname(.) %>%
+  setwd(.)
+
   source("0_Input/6a_Exclusion_Functions.R")
-  
+
   d <-
     load_and_reduce(
       criteria = c(
@@ -17,9 +22,9 @@
 # Bout function helpers ---------------------------------------------------
 
   sb_bouts <- function(d, a, sb, min_bout, valid_indices, probs) {
-    
+
     ## Determine all SB bouts
-    
+
       bouts <-
         {a$PAXINTEN <= sb} %>%
         paste(a$is_wear) %>%
@@ -27,9 +32,9 @@
         within({values = as.character(values)}) %>%
         .[.$values=="TRUE TRUE", ] %>%
         .[.$lengths >= min_bout, ]
-    
+
     ## Exclude bouts that overlap with invalid days
-    
+
       bouts %<>%
         nrow(.) %>%
         seq(.) %>%
@@ -40,7 +45,7 @@
           all(.)
         }, valid_indices = valid_indices) %>%
         bouts[., ]
-  
+
     ## Assemble features
 
       ## This is unnecessary, and the final test has always passed
@@ -57,7 +62,7 @@
       #   unique(.) %>%
       #   a[., ] %T>%
       #   {stopifnot(nrow(.) == sum(bouts$lengths))}
-      
+
       bouts$lengths %>%
       quantile(probs = probs) %>%
       t(.) %>%
@@ -78,24 +83,24 @@
         stringsAsFactors = FALSE
       )} %>%
       merge(d, .)
-    
+
   }
-  
+
   mvpa_bouts <- function(d, a, mvpa, valid_indices) {
-    
+
     ## Determine all bouts
-    
+
       bouts <-
         {a$PAXINTEN >= mvpa} %>%
         paste(a$is_wear) %>%
         PAutilities::index_runs(.) %>%
         within({values = as.character(values)}) %>%
         .[.$values=="TRUE TRUE", ]
-    
+
     ## Exclude bouts that overlap with invalid days
-    
+
       if (nrow(bouts) > 0) {
-        
+
         bouts %<>%
           nrow(.) %>%
           seq(.) %>%
@@ -106,16 +111,16 @@
             all(.)
           }, valid_indices = valid_indices) %>%
           bouts[., ]
-        
+
       }
-    
+
     ## Finish up
-    
+
       sum(bouts$lengths) %>%
       data.frame(d, total_MVPA_raw = ., stringsAsFactors = FALSE)
-    
+
   }
-  
+
 # Bout function -----------------------------------------------------------
 
   get_bouts <- function(
@@ -126,15 +131,15 @@
       0.75, 0.8, 0.9
     ), sb = 100, mvpa = 1952
   ) {
-    
+
     ## Set up, read, and run Choi
-    
+
       timer <- PAutilities::manage_procedure(
         "Start", "\rProcessing row", n, "of", N
       )
-    
+
       a <- readRDS(d$accel_file)
-      
+
       invisible(utils::capture.output(
         a$is_wear <-
           as.POSIXct("2000-01-01", "UTC") %>%
@@ -146,27 +151,27 @@
           ) %>%
           {.$wearing %in% "w"}
       ))
-  
+
     ## Determine valid days (and total wear time)
-      
+
       valid_days <-
         tapply(a$is_wear, a$PAXDAY, sum) %>%
         {. >= 600} %>%
         {names(.)[.]} %>%
         as.character(.) %>%
         as.numeric(.)
-      
+
       valid_indices <-
         (a$PAXDAY %in% valid_days) %>%
         {seq(.)[.]}
-      
+
       total_wear_min <-
         tapply(a$is_wear, a$PAXDAY, sum) %>%
         .[names(.) %in% valid_days] %>%
         sum(.)
-      
+
     ## Get bout information
-      
+
       d %>%
       sb_bouts(a, sb, min_bout, valid_indices, probs) %>%
       mvpa_bouts(a, mvpa, valid_indices) %>%
@@ -181,25 +186,25 @@
       within({
         bouts_1440 = round(bouts_weartime * 1440, 0)
       })
-    
+
   }
 
 # Adjustment and formatting functions -------------------------------------
 
   residual_adjust <- function(d, variable, confounder, label) {
-    
+
     if ("zznewvariable" %in% names(d)) stop(
       "`d` cannot have a variable called `zznewvariable`"
     )
-    
+
     cat("\n")
-    
+
     paste(
       "Performing residual adjustment for", variable,
       "based on", confounder
     ) %>%
     print(.)
-    
+
     paste0(variable, " ~ ", confounder) %>%
     as.formula(.) %>%
     lm(d) %>%
@@ -208,14 +213,14 @@
     stats::setNames(
       ., gsub("^zznewvariable$", label, names(.))
     )
-    
+
   }
-  
+
   final_format <- function(d) {
-    
+
     c(d, make.row.names = FALSE) %>%
     do.call(rbind, .) %>%
-      
+
     residual_adjust("total_SB_raw", "total_wear_min", "total_SB_residual") %>%
     within({
       SB_perc = total_SB_raw / total_wear_min
@@ -224,8 +229,8 @@
       mean_SB_bout_residual = total_SB_residual / n_bouts
       mean_SB_bout_raw = total_SB_raw / n_bouts
       SB_1440 = round(SB_perc * 1440, 0)
-    }) %>%  
-      
+    }) %>%
+
     residual_adjust("total_MVPA_raw", "total_wear_min", "total_MVPA_residual")  %>%
     within({
       MVPA_perc = total_MVPA_raw / total_wear_min
@@ -235,9 +240,9 @@
       MVPA_min_per_day_raw = total_MVPA_raw / n_days
       MVPA_1440 = round(MVPA_perc * 1440, 0)
     })
-    
+
   }
-  
+
 # Implementation ----------------------------------------------------------
 
   print("Bout threshold 1 min (i.e., no threshold)")
@@ -253,7 +258,7 @@
     )} %>%
     final_format(.) %>%
     saveRDS("1_Bout_Data/d1_final.rds")
-  
+
   print("Bout threshold 5 min")
     d %>%
     nrow(.) %>%

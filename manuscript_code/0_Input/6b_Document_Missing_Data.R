@@ -2,20 +2,26 @@
 
   rm(list = ls())
   library(magrittr)
+
+  rstudioapi::getActiveDocumentContext()$path %>%
+  dirname(.) %>%
+  dirname(.) %>%
+  setwd(.)
+
   source("0_Input/6a_Exclusion_Functions.R")
 
 # Sanity checks -----------------------------------------------------------
 
   # ## Function
-  # 
+  #
   #   check <- function(age) {
-  # 
+  #
   #     ref <-
   #       readRDS("0_Input/rds/vars.rds") %>%
   #       .[!is.na(.$accel_file), ] %>%
   #       .[.$age >= age,] %>%
   #       .[.$accel_valid, ]
-  # 
+  #
   #     vars <- suppressMessages(
   #       load_and_reduce(
   #         criteria = c(
@@ -27,13 +33,13 @@
   #         age = age
   #       )
   #     )
-  # 
+  #
   #     setequal(ref$id, vars$id)
-  # 
+  #
   #   }
-  # 
+  #
   # ## Implementation
-  # 
+  #
   #   check(25)
   #   check(30)
 
@@ -52,8 +58,7 @@
   #     "accel_exists", "age", "pregnancy", "accel_valid"
   #   ), age = 25
   # )
-  # 
+  #
   # epi <-
   #   load_and_reduce(age = 30) %T>%
   #   {stopifnot(all(.$id %in% clustering$id))}
-  
