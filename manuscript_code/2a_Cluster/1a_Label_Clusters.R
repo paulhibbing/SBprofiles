@@ -158,6 +158,6 @@
     
     cluster::pam(pcdata, 3, cluster.only = TRUE) %>%
     unname(.) %>%
-    factor(labels = c("Avoider", "Limiter", "Prolonger")) %>%
+    factor(labels = c("Interrupted", "Intermediate", "Prolonged")) %>%
     {within(d, {cluster = .})} %>%
     saveRDS("2a_Cluster/rds/clustered_d.rds")
