@@ -1,2 +1,17 @@
-YEAR: 2020
-COPYRIGHT HOLDER: Children's Mercy Kansas City
+- Overall rights to this repository are as follows:
+
+  * YEAR: 2021
+  * COPYRIGHT HOLDER: Children's Mercy Kansas City
+
+- Exceptions apply to data drawn from the public domain,
+  including the contents of:
+
+  * https://github.com/paulhibbing/SBprofiles/tree/main/data
+  * Portions of https://github.com/paulhibbing/SBprofiles/blob/main/R/sysdata.rda
+
+  The above elements remain in the public domain and are not copyrighted by the
+  maintainer(s) of this repository.
+
+- In short, code and derivative data are under the MIT license, while source
+  data (particularly the example_data object) are in the public domain. See also:
+  https://github.com/paulhibbing/SBprofiles/blob/main/LICENSE.md

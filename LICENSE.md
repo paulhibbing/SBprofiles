@@ -1,3 +1,5 @@
+Except for public domain data (see https://github.com/paulhibbing/SBprofiles/LICENSE), this repository is under the open source MIT license (see below).
+
 # MIT License
 
 Copyright (c) 2020 Children's Mercy Kansas City
