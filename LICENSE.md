@@ -1,4 +1,4 @@
-Except for public domain data (see https://github.com/paulhibbing/SBprofiles/LICENSE), this repository is under the open source MIT license (see below).
+Except for public domain data (see https://github.com/paulhibbing/SBprofiles/blob/main/LICENSE), this repository is under the open source MIT license (see below).
 
 # MIT License
 
