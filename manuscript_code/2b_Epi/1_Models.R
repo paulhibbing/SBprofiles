@@ -30,10 +30,10 @@
   ## This is why we should not adjust for sex (and same concept applies to age):
   # > table(d$high_risk, d$sex)
   # 
-  #       Male Female
-  # FALSE  725    677
-  # TRUE   478    110 <--- Being female is highly predictive of whether a person
-  #                        can be in the high risk category, and this is
+  #        Male  Female
+  # FALSE  1365    1778
+  # TRUE    670     247 <--- Being female is highly predictive of whether a
+  #                        person can be in the high risk category, and this is
   #                        precisely because the risk calculation assumes
   #                        females have lower risk. In other words, sex has
   #                        already been accounted for when determining the

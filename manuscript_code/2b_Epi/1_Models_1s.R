@@ -4,7 +4,7 @@
   library(magrittr)
   source("2b_Epi/zz_functions.R")
 
-  d <- readRDS("2b_Epi/0_Epi_data_1s.rds.rds")
+  d <- readRDS("2b_Epi/0_Epi_data_1s.rds")
 
   M1 <- NULL
   M2 <- c("race", "MVPA_perc")
@@ -13,10 +13,10 @@
   ## This is why we should not adjust for sex (and same concept applies to age):
   # > table(d$high_risk, d$sex)
   # 
-  #       Male Female
-  # FALSE  704    662
-  # TRUE   458    101 <--- Being female is highly predictive of whether a person
-  #                        can be in the high risk category, and this is
+  #       Male   Female
+  # FALSE  1326    1757
+  # TRUE    647     230 <--- Being female is highly predictive of whether a
+  #                        person can be in the high risk category, and this is
   #                        precisely because the risk calculation assumes
   #                        females have lower risk. In other words, sex has
   #                        already been accounted for when determining the
