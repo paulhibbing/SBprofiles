@@ -2,27 +2,17 @@
 
   rm(list = ls())
   library(magrittr)
+
+  source("0_Input/6a_Exclusion_Functions.R")
   
   d <-
-    readRDS("0_Input/rds/raw_DVs.rds") %T>%
-    {message(
-      "Removing ", sum(is.na(.$accel)), " non-files"
-    )} %>%
-    {.[!is.na(.$accel), ]} %T>%
-    {message(
-      "Removing ", sum(.$age < 25), " files on age criterion"
-    )} %>%
-    {.[.$age >= 25, ]} %T>%
-    {message(
-      "Removing ", sum(is.na(.$exam_pregnancy) | is.na(.$pregnancy)),
-      " files for pregnancy"
-    )} %>%
-    {.[!(is.na(.$exam_pregnancy) | is.na(.$pregnancy)), ]} %>%
-    subset(select = -c(exam_pregnancy, pregnancy)) %T>%
-    {message(
-      "Removing ", sum(!.$accel_valid), " invalid files"
-    )} %>%
-    {.[.$accel_valid, ]}
+    load_and_reduce(
+      criteria = c(
+        "accel_exists", "age", "pregnancy", "accel_valid"
+      ),
+      age = 25
+    ) %T>%
+    {rm(list = ls(envir = globalenv()), envir = globalenv())}
 
 # Bout function helpers ---------------------------------------------------
 
@@ -143,17 +133,16 @@
         "Start", "\rProcessing row", n, "of", N
       )
     
-      a <- readRDS(d$accel)
+      a <- readRDS(d$accel_file)
       
       invisible(utils::capture.output(
         a$is_wear <-
           as.POSIXct("2000-01-01", "UTC") %>%
-          seq(by = "1 sec", length.out = nrow(a)) %>%
+          seq(by = "1 min", length.out = nrow(a)) %>%
           as.character(.) %>%
-          data.frame(TimeStamp = ., counts = a$PAXINTEN) %>%
+          data.frame(TimeStamp = ., axis1 = a$PAXINTEN) %>%
           PhysicalActivity::wearingMarking(
-            perMinuteCts = 1, cts = "counts",
-            getMinuteMarking = TRUE
+            perMinuteCts = 1, getMinuteMarking = TRUE
           ) %>%
           {.$wearing %in% "w"}
       ))
