@@ -14,4 +14,4 @@ c(
 ) %>%
 lapply(readRDS) %>%
 stats::setNames(c("tree1", "tree5", "forest1", "forest5")) %>%
-usethis::use_data(internal = TRUE)
+usethis::use_data(internal = TRUE, overwrite = TRUE)
