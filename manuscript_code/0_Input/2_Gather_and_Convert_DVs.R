@@ -192,8 +192,9 @@
   d <- SASxport::read.xport(tracker$D[11])
   
   ## There are pretty substantial differences between variables in 2003-2004
-  ## versus 2005-2006, but the key hypertension items match, and that's what
-  ## matters
+  ## versus 2005-2006 -- Item 040 had more screening sub-items in the former
+  ## cycle than the latter. Only 040A will be used, since that's all that
+  ## overlapped between the two cycles
     # names(c) %>%
     # c(names(d)) %>%
     # table(.) %>%

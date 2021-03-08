@@ -15,7 +15,7 @@ see the [vignette](https://github.com/paulhibbing/SBprofiles/blob/main/vignettes
 packages <- c(
   "beepr", "caret", "cluster", "data.table", "e1071", "factoextra",
   "ggplot2", "magrittr", "PAutilities", "PhysicalActivity", "randomForest",
-  "rvest", "SASxport", "tree", "xml2", "devtools"
+  "rvest", "SASxport", "tree", "xml2", "devtools", "rstudioapi"
 )
 
 lapply(
