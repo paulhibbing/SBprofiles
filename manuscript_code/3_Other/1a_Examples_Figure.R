@@ -2,13 +2,12 @@
 
   rm(list = ls())
   library(magrittr)
+  library(ggplot2)
 
   rstudioapi::getActiveDocumentContext()$path %>%
   dirname(.) %>%
   dirname(.) %>%
   setwd(.)
-
-  source("3_Other/zz_theme_settings.R")
 
   set.seed(610)
 
@@ -63,7 +62,7 @@
 
 # Create the figure -------------------------------------------------------
 
-  "3_Other/1b_Examples.tif" %>%
+  "3_Other/1b_Examples_raw.tif" %>%
   tiff(
     7, 5, "in",
     res = 1200, compression = "lzw"
@@ -76,10 +75,13 @@
         fill = "gray80",
         alpha = 0.5
       ) +
-      theme_settings +
-      theme(axis.text.x = element_text(
-        size = 16, face = "bold"
-      )) +
+      theme_classic() +
+      theme(
+        axis.line = element_line(size = .5),
+        axis.text = element_text(size = 14),
+        axis.title = element_text(size = 16, face = "bold"),
+        axis.text.x = element_text(size = 16, face = "bold")
+      ) +
       scale_x_discrete("") +
       scale_y_continuous("SB (min)") +
       a_bars + b_bars + c_bars + d_bars

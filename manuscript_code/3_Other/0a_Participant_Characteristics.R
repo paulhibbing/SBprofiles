@@ -8,10 +8,28 @@
   dirname(.) %>%
   setwd(.)
 
+  other <-
+    readRDS("0_Input/rds/demographic.rds") %>%
+    within({
+      INDFMPIR = factor(
+        ifelse(INDFMPIR <= 1, "Low", "High"),
+        c("Low", "High")
+      )
+    })
   clustering <-
     readRDS("2a_Cluster/rds/clustered_d.rds") %>%
-    within({weight_status = sapply(bmi, PAutilities::weight_status)})
-  cvd <- readRDS("2b_Epi/0_Epi_data.rds")
+    within({
+      weight_status = sapply(bmi, PAutilities::weight_status)
+      sep = other$INDFMPIR[match(id, other$SEQN)]
+    }) %>%
+    PAutilities::df_reorder("sep", "age")
+  cvd <-
+    readRDS("2b_Epi/0_Epi_data.rds") %>%
+    within({
+      sep = other$INDFMPIR[match(id, other$SEQN)]
+      cluster = forest_profile
+    }) %>%
+    PAutilities::df_reorder("sep", "age")
 
 # Functions ---------------------------------------------------------------
 
@@ -52,20 +70,31 @@
     NULL
   }
 
-  wrapper <- function(d) {
+  single_wrapper <- function(d, colname = "n_perc") {
     as.list(d) %>%
     mapply(
       get_characteristics, x = .,
       label = names(.), SIMPLIFY = FALSE
     ) %>%
     c(make.row.names = FALSE) %>%
-    do.call(rbind, .)
+    do.call(rbind, .) %>%
+    stats::setNames(., gsub("^n_perc$", colname, names(.)))
+  }
+
+  multi_wrapper <- function(d) {
+    split(d, d$cluster) %>%
+    c(list(total = d), .) %>%
+    {mapply(single_wrapper, ., names(.), SIMPLIFY = FALSE)} %>%
+    lapply(function(x) if("total" %in% names(x)) x else x[ ,-1]) %>%
+    do.call(cbind, .) %>%
+    stats::setNames(., gsub("^.*\\.", "", names(.))) %>%
+    PAutilities::df_reorder("total", "Prolonged")
   }
 
 # Implementation ----------------------------------------------------------
 
-  wrapper(clustering) %>%
+  multi_wrapper(clustering) %>%
   data.table::fwrite("3_Other/0b_clustering.csv")
 
-  wrapper(cvd) %>%
+  multi_wrapper(cvd) %>%
   data.table::fwrite("3_Other/0c_cvd.csv")
