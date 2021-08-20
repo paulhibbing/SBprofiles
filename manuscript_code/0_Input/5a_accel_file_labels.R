@@ -2,6 +2,7 @@
 ## make sense to do over and over again in 5b. The output here is stored in an
 ## RDS file and then just loaded into 5b. Uncomment and re-run the code if there
 ## is a need for re-processing
+## (RStudio for Windows: highlight and press ctrl + shift + C)
 
 #   rm(list = ls())
 #   library(magrittr)
@@ -36,7 +37,7 @@
 #       invisible(utils::capture.output(
 #         choi_test <-
 #           as.POSIXct("2000-01-01", "UTC") %>%
-#           seq(by = "1 sec", length.out = nrow(a)) %>%
+#           seq(by = "1 min", length.out = nrow(a)) %>%
 #           as.character(.) %>%
 #           data.frame(TimeStamp = ., axis1 = a$PAXINTEN) %>%
 #           {try(PhysicalActivity::wearingMarking(
@@ -94,8 +95,9 @@
 #   ) %>%
 #   saveRDS("0_Input/rds/accelerometer_valid.rds")
 #
-#   if (!!length(warnings())) { ## No longer needed!
-#     sink("0_Input/6a_Choi_Failure_Log.txt")
+#   ## Below is no longer needed (bug fix in PhysicalActivity package?)
+#   if (!!length(warnings())) {
+#     sink("0_Input/5a_Choi_Failure_Log.txt")
 #       warnings()
 #     closeAllConnections()
 #   }

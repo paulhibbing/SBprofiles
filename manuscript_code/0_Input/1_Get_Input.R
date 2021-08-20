@@ -1,10 +1,12 @@
-rm(list = ls())
-library(magrittr)
+# Setup -------------------------------------------------------------------
 
-rstudioapi::getActiveDocumentContext()$path %>%
-dirname(.) %>%
-dirname(.) %>%
-setwd(.)
+  rm(list = ls())
+  library(magrittr)
+
+  rstudioapi::getActiveDocumentContext()$path %>%
+  dirname(.) %>%
+  dirname(.) %>%
+  setwd(.)
 
 # XPT Files ---------------------------------------------------------------
 

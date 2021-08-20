@@ -1,3 +1,9 @@
+### THIS FILE SPLITS THE ACCELEROMETER DATASETS UP INTO INDIVIDUAL PARTICIPANT
+### FILES. IT REQUIRES A MACHINE WITH BIG MEMORY TO READ IN THE FULL
+### ACCELEROMETER DATASETS IN THE FIRST PLACE. THERE ARE NO OTHER BELLS AND
+### WHISTLES ON THIS PROCESS, WHICH IS DESIRABLE TO AVOID HAVING TO RERUN IT.
+### (IT'S VERY TIME CONSUMING.)
+
 ## Setup
 
   rm(list = ls())
@@ -39,6 +45,7 @@
   }
 
 ## Process 2003-2004 (time intensive - must manually uncomment to run)
+## (RStudio for Windows: highlight and press ctrl + shift + C)
 
   # c <- SASxport::read.xport(tracker$C[8])
   #
@@ -55,6 +62,7 @@
   # gc()
 
 ## Process 2005-2006 (time intensive - must manually uncomment to run)
+## (RStudio for Windows: highlight and press ctrl + shift + C)
 
   # d <- SASxport::read.xport(tracker$D[8])
   #

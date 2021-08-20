@@ -1,5 +1,5 @@
-## These functions are designed for documenting data loss, but may also come in
-## handy for reducing datasets for analysis
+## These functions are designed for documenting data loss, but also come in
+## handy for reducing datasets in the clustering and epi analyses
 
 print_table <- function(x) {
   
@@ -128,25 +128,27 @@ exclude_diabetes <- function(vars, ...) {
   
 }
 
-exclude_accel_valid <- function(vars, ...) {
+exclude_accel_invalid <- function(vars, ...) {
   
   vars %T>%
-    {message(
-      "Removing ", sum(!.$accel_valid),
-      " invalid activity monitor files (remaining n = ",
-      sum(.$accel_valid), ")",
-      print_table(.$accel_status[!.$accel_valid])
-    )} %>%
-    {.[.$accel_valid, ]}
+  {message(
+    "Removing ", sum(!.$accel_valid),
+    " invalid activity monitor files (remaining n = ",
+    sum(.$accel_valid), ")",
+    print_table(.$accel_status[!.$accel_valid])
+  )} %>%
+  {.[.$accel_valid, ]}
   
 }
 
 get_args <- function(criterion, ...) {
+  
   c("chf", "chd", "angina", "mi", "stroke") %>%
   {ifelse(criterion %in% ., "cvd", criterion)} %>%
   paste0("exclude_", .) %>%
   {eval(parse(text = .))} %>%
   list(fun = ., varname = criterion, ...)
+  
 }
 
 load_and_reduce <- function(
@@ -155,7 +157,7 @@ load_and_reduce <- function(
     "accel_exists", "age", "pregnancy",
     "chf", "chd", "angina", "mi", "stroke",
     "smoking", "cholesterol", "bp", "antihypertensive",
-    "diabetes", "accel_valid"
+    "diabetes", "accel_invalid"
   ), age
 ) {
   

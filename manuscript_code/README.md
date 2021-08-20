@@ -13,9 +13,10 @@ see the [vignette](https://github.com/paulhibbing/SBprofiles/blob/main/vignettes
 ```
 
 packages <- c(
-  "beepr", "caret", "cluster", "data.table", "e1071", "factoextra",
+  "beepr", "caret", "cluster", "data.table", "DescTools", "e1071", "factoextra",
   "ggplot2", "magrittr", "PAutilities", "PhysicalActivity", "randomForest",
-  "rvest", "SASxport", "tree", "xml2", "devtools", "rstudioapi"
+  "reshape2", "rvest", "SASxport", "tree", "xml2", "devtools", "rstudioapi",
+  "svDialogs"
 )
 
 lapply(
@@ -27,6 +28,12 @@ if (!"tree" %in% installed.packages()) {
   devtools::install_version("tree", "1.0-39") ## Older R can only install old version
 }
 
-devtools::install_github("SciViews/svDialogs")
+if (packageVersion("DescTools") < "0.99.32") {
+    install.packages("DescTools") ## Requires a newer version of DescTools
+}
+
+## Need development versions of two packages:
+devtools::install_github("paulhibbing/PAutilities", dependencies = FALSE)
+devtools::install_github("SciViews/svDialogs", dependencies = FALSE)
 
 ```
