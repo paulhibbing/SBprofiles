@@ -13,12 +13,6 @@ Encoding: UTF-8
 LazyData: true
 URL: https://github.com/paulhibbing/SBprofiles
 BugReports: https://github.com/paulhibbing/SBprofiles/issues
-Suggests: 
-    rmarkdown,
-    AGread,
-    PhysicalActivity,
-    usethis,
-    knitr
 Imports: 
     magrittr,
     PAutilities,
@@ -26,6 +20,13 @@ Imports:
     stats,
     tree,
     utils
+Suggests: 
+    AGread,
+    knitr,
+    PhysicalActivity,
+    remotes,
+    rmarkdown,
+    usethis
 Remotes: paulhibbing/PAutilities
 RoxygenNote: 7.1.1
 Depends: 

@@ -34,9 +34,9 @@ Once you have R, you need to get a copy of the SBprofiles code. You can do that 
 
 ```{r install, eval=FALSE}
 
-if (!"devtools" %in% installed.packages()) install.packages("devtools")
+if (!"remotes" %in% installed.packages()) install.packages("remotes")
 
-devtools::install_github("paulhibbing/SBprofiles")
+remotes::install_github("paulhibbing/SBprofiles")
 
 ```
 
