@@ -8,14 +8,14 @@
   dirname(.) %>%
   setwd(.)
 
-  d <- readRDS("2a_Cluster/rds/clustered_d_1s.rds")
+  d <- readRDS("2a_Cluster/rds/clustered_d_1min.rds")
 
   source("2a_Cluster/zz_summary_confusionMatrix.R")
   library(ggplot2)
 
   features <-
     c(
-      "SB_perc", "bouts_weartime",
+      "SB_perc", "bout_frequency",
       "Q10_bout", "Q25_bout", "Q50_bout",
       "Q75_bout", "Q90_bout", "cluster"
     ) %T>%
@@ -29,10 +29,10 @@
     #   d[ ,features] %T>%
     #   {set.seed(610)} %>%
     #   tree::tree(cluster~., .) %T>%
-    #   saveRDS("2a_Cluster/rds/tree_1s.rds")
+    #   saveRDS("2a_Cluster/rds/tree_1min.rds")
     #
     # tiff(
-    #   "zz_figures/3a_tree_1s.tif", 7, 7, "in",
+    #   "zz_figures/3a_tree_1min.tif", 7, 7, "in",
     #   res = 1200, compression = "lzw"
     # )
     #   plot(tree)
@@ -47,7 +47,12 @@
     #   randomForest::randomForest(
     #     cluster~., .
     #   ) %T>%
-    #   saveRDS("2a_Cluster/rds/forest_1s.rds")
+    #   saveRDS("2a_Cluster/rds/forest_1min.rds")
+
+  ## Load the objects in (whether newly saved or not)
+
+    tree <- readRDS("2a_Cluster/rds/tree_1min.rds")
+    forest <- readRDS("2a_Cluster/rds/forest_1min.rds")
 
 # 50-fold cross-validation ------------------------------------------------
 
@@ -60,7 +65,11 @@
       ceiling(.) %>%
       rep(seq(50), each = .) %>%
       sample(nrow(d)) %>%
-      {within(d, {fold = .})}
+      {within(d, {fold = .})} %T>%
+      {stopifnot(length(unique(.$fold)) == 50)}
+
+    # 103-107 per fold, per below
+    #   table(table(d$fold))
 
   ## Establish fold CV functions
 
@@ -120,4 +129,4 @@
       data.frame(Model = "Forest", ., stringsAsFactors = FALSE)
 
     rbind(tree_results, forest_results) %>%
-    data.table::fwrite("2a_Cluster/3b_CV_Results_1s.csv")
+    data.table::fwrite("2a_Cluster/3b_CV_Results_1min.csv")

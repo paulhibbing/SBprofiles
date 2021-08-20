@@ -6,7 +6,7 @@ dirname(.) %>%
 dirname(.) %>%
 setwd(.)
 
-d <- readRDS("2a_Cluster/rds/clustered_d_1s.rds")
+d <- readRDS("2a_Cluster/rds/clustered_d_1min.rds")
 
 source("2a_Cluster/zz_features.R")
 
@@ -34,5 +34,5 @@ c(list(total = d)) %>%
 )} %>%
 do.call(data.frame, .) %>%
 data.table::fwrite(
-  "2a_Cluster/2_Descriptives_1s.csv", row.names = TRUE
+  "2a_Cluster/2_Descriptives_1min.csv", row.names = TRUE
 )

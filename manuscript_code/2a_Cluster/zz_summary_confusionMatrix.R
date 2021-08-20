@@ -2,15 +2,10 @@
 #' same information
 #'
 #' This operation is useful for convenient exporting and reporting in tables
-#'
-#' @return A data frame containing the information from the `confusionMatrix`
-#'   object
-#' @keywords internal
-#'
 summary.confusionMatrix <- function(object, ...) {
-  # object <- cm
 
   var_names <- names(dimnames(object$table))
+  
   instances <- reshape2::dcast(
     data.frame(object$table, stringsAsFactors = FALSE),
     eval(parse(text = var_names[1])) ~

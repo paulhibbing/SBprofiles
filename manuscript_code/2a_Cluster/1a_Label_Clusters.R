@@ -59,6 +59,7 @@
       as.numeric(.)
 
   ## n = 7 PCs fit the bill. Max variance explained is 97.9%, per below
+  ## individually 1.2% to 73.8%
     # summary(pcs)$importance[ ,seq(n)]
 
   ## Now look at the loadings
@@ -71,9 +72,9 @@
     # })
 
     ## First component is driven "equally" by everything but 10th percentile and
-    ## bout rate
+    ## bout frequency
 
-    ## Second component is driven by bouts rate
+    ## Second component is driven by bout frequency
 
     ## Third is driven by 10th percentile
 
@@ -81,9 +82,9 @@
 
     ## Fifth is driven by 20th percentile
 
-    ## Sixth is driven by 25th percentiles
+    ## Sixth is driven by 25th percentile
 
-    ## Seventh is driven by 25th and 30th percentiles
+    ## Seventh is driven by 30th and 25th percentiles
 
 # Optimal PCA-based clusters ----------------------------------------------
 
@@ -91,6 +92,7 @@
 
     ## Below code is time consuming to run -- uncomment
     ## if it needs to be redone
+    ## (RStudio for Windows: highlight and press ctrl + shift + C)
 
       # set.seed(610)
       #

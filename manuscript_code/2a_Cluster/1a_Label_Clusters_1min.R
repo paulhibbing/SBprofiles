@@ -85,13 +85,13 @@
 
     ## Second component is driven by 25th percentile
 
-    ## Third is driven by bout rate and 25th percentile
+    ## Third is driven by bout frequency and 25th percentile
 
     ## Fourth is driven by 30th percentile
 
     ## Fifth is driven by 40th percentile
 
-    ## Sixth is driven 50th and 30th percentiles
+    ## Sixth is driven by median and 30th percentile
 
     ## Seventh is driven by median and SB%
 
@@ -101,10 +101,11 @@
 
     ## Below code is time consuming to run -- uncomment
     ## if it needs to be redone
+    ## (RStudio for Windows: highlight and press ctrl + shift + C)
 
       # set.seed(610)
       #
-      # pdf("2a_Cluster/1b_Optimal_Clustering_1s.pdf")
+      # pdf("2a_Cluster/1b_Optimal_Clustering_1min.pdf")
       #
       #   factoextra::fviz_nbclust(
       #     pcdata, cluster::pam, method = "wss",
@@ -175,7 +176,7 @@
     row.names(.) %>%
     d[.,variables] %T>%
     View("medoids") %>%
-    data.table::fwrite("2a_Cluster/1c_Medoids_1s.csv")
+    data.table::fwrite("2a_Cluster/1c_Medoids_1min.csv")
 
 # Assign clusters ---------------------------------------------------------
 
@@ -185,4 +186,4 @@
     unname(.) %>%
     factor(c(3, 1, 2), c("Interrupted", "Intermediate", "Prolonged")) %>%
     {within(d, {cluster = .})} %>%
-    saveRDS("2a_Cluster/rds/clustered_d_1s.rds")
+    saveRDS("2a_Cluster/rds/clustered_d_1min.rds")

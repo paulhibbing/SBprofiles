@@ -15,7 +15,7 @@
 
   features <-
     c(
-      "SB_perc", "bouts_weartime",
+      "SB_perc", "bout_frequency",
       "Q10_bout", "Q25_bout", "Q50_bout",
       "Q75_bout", "Q90_bout", "cluster"
     ) %T>%
@@ -49,6 +49,11 @@
     #   ) %T>%
     #   saveRDS("2a_Cluster/rds/forest.rds")
 
+  ## Load the objects in (whether newly saved or not)
+
+    tree <- readRDS("2a_Cluster/rds/tree.rds")
+    forest <- readRDS("2a_Cluster/rds/forest.rds")
+
 # 50-fold cross-validation ------------------------------------------------
 
   ## Randomly assign folds
@@ -60,7 +65,11 @@
       ceiling(.) %>%
       rep(seq(50), each = .) %>%
       sample(nrow(d)) %>%
-      {within(d, {fold = .})}
+      {within(d, {fold = .})} %T>%
+      {stopifnot(length(unique(.$fold)) == 50)}
+
+    # 109-110 per fold, per below
+    #   table(table(d$fold))
 
   ## Establish fold CV functions
 
