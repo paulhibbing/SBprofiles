@@ -22,7 +22,7 @@ d <-
       , c("id", "diabetes", "weight_status", "cvd_risk")
     ]
   ) %T>%
-  {stopifnot(nrow(.) == 4146, !anyNA(.$cvd_risk))} %>%
+  {stopifnot(nrow(.) == 4146, !anyNA(.$cvd_risk))} %>% ## See line 10
   within({
     high_risk = (cvd_risk > 0.20)
     accel_valid = sapply(accel_valid, isTRUE)

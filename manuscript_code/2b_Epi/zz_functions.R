@@ -1,11 +1,18 @@
 # Convenience functions ---------------------------------------------------
 
-tertilize <- function(x) {
+tertilize <- function(x, digits = 1, nsmall = 1) {
   
   tertiles <- quantile(x, probs = c(0.33, 0.67))
   
+  test_vals <- unique(tertiles)
+  if (length(test_vals) == 1) {
+    message("Tertile breaks are all equal to ", test_vals)
+    message("Returning NA")
+    return(NA)
+  }
+  
   labs <-
-    format(tertiles, digits = 1, nsmall = 1) %>%
+    format(tertiles, digits = digits, nsmall = nsmall) %>%
     c(., "Inf") %>%
     paste0("T", 1:3, " (", ., ")")
   

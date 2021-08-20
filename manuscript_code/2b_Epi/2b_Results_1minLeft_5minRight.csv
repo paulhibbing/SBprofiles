@@ -1,0 +1,56 @@
+Group,M1_OR_95CI,M1_P,M2_OR_95CI,M2_P,M3_OR_95CI,M3_P,Group,M1_OR_95CI,M1_P,M2_OR_95CI,M2_P,M3_OR_95CI,M3_P
+Exposure: forest_profile,Exposure: forest_profile,Exposure: forest_profile,Exposure: forest_profile,Exposure: forest_profile,Exposure: forest_profile,Exposure: forest_profile,Exposure: forest_profile,Exposure: forest_profile,Exposure: forest_profile,Exposure: forest_profile,Exposure: forest_profile,Exposure: forest_profile,Exposure: forest_profile
+  Interrupted,Referent,"",Referent,"",Referent,"",  Interrupted,Referent,"",Referent,"",Referent,""
+  Intermediate,"2.31 (1.83, 2.94)",<0.001,"1.75 (1.38, 2.25)",<0.001,"1.78 (1.40, 2.28)",<0.001,  Intermediate,"2.25 (1.83, 2.77)",<0.001,"1.80 (1.46, 2.23)",<0.001,"1.85 (1.50, 2.29)",<0.001
+  Prolonged,"5.47 (4.31, 7.00)",<0.001,"3.65 (2.84, 4.74)",<0.001,"3.79 (2.93, 4.93)",<0.001,  Prolonged,"6.01 (4.81, 7.55)",<0.001,"4.23 (3.33, 5.38)",<0.001,"4.52 (3.55, 5.79)",<0.001
+  P-trend,<0.001,"",<0.001,"",<0.001,"",  P-trend,<0.001,"",<0.001,"",<0.001,""
+Exposure: adj_total_SB,Exposure: adj_total_SB,Exposure: adj_total_SB,Exposure: adj_total_SB,Exposure: adj_total_SB,Exposure: adj_total_SB,Exposure: adj_total_SB,Exposure: adj_total_SB,Exposure: adj_total_SB,Exposure: adj_total_SB,Exposure: adj_total_SB,Exposure: adj_total_SB,Exposure: adj_total_SB,Exposure: adj_total_SB
+  T1 (7.8),Referent,"",Referent,"",Referent,"",  T1 (5.7),Referent,"",Referent,"",Referent,""
+  T2 (9.4),"2.08 (1.67, 2.60)",<0.001,"1.49 (1.19, 1.89)",<0.001,"1.50 (1.19, 1.89)",<0.001,  T2 (7.5),"2.11 (1.68, 2.65)",<0.001,"1.60 (1.26, 2.02)",<0.001,"1.60 (1.26, 2.03)",<0.001
+  T3 (Inf),"4.50 (3.66, 5.57)",<0.001,"2.59 (2.05, 3.27)",<0.001,"2.59 (2.05, 3.28)",<0.001,  T3 (Inf),"5.22 (4.23, 6.49)",<0.001,"3.28 (2.61, 4.15)",<0.001,"3.29 (2.61, 4.17)",<0.001
+  P-trend,<0.001,"",<0.001,"",<0.001,"",  P-trend,<0.001,"",<0.001,"",<0.001,""
+Exposure: adj_sb_0_14,Exposure: adj_sb_0_14,Exposure: adj_sb_0_14,Exposure: adj_sb_0_14,Exposure: adj_sb_0_14,Exposure: adj_sb_0_14,Exposure: adj_sb_0_14,Exposure: adj_sb_0_14,Exposure: adj_sb_0_14,Exposure: adj_sb_0_14,Exposure: adj_sb_0_14,Exposure: adj_sb_0_14,Exposure: adj_sb_0_14,Exposure: adj_sb_0_14
+  T1 (4.1),Referent,"",Referent,"",Referent,"",  T1 (2.3),Referent,"",Referent,"",Referent,""
+  T2 (4.9),"0.62 (0.52, 0.75)",<0.001,"0.56 (0.46, 0.68)",<0.001,"0.56 (0.46, 0.68)",<0.001,  T2 (2.8),"1.20 (1.00, 1.43)",0.0510,"1.01 (0.84, 1.22)",0.9089,"1.01 (0.84, 1.22)",0.9087
+  T3 (Inf),"0.42 (0.35, 0.51)",<0.001,"0.33 (0.27, 0.41)",<0.001,"0.33 (0.27, 0.41)",<0.001,  T3 (Inf),"0.74 (0.61, 0.90)",0.0027,"0.53 (0.43, 0.65)",<0.001,"0.53 (0.43, 0.65)",<0.001
+  P-trend,<0.001,"",<0.001,"",<0.001,"",  P-trend,0.0037,"",<0.001,"",<0.001,""
+Exposure: adj_sb_15_29,Exposure: adj_sb_15_29,Exposure: adj_sb_15_29,Exposure: adj_sb_15_29,Exposure: adj_sb_15_29,Exposure: adj_sb_15_29,Exposure: adj_sb_15_29,Exposure: adj_sb_15_29,Exposure: adj_sb_15_29,Exposure: adj_sb_15_29,Exposure: adj_sb_15_29,Exposure: adj_sb_15_29,Exposure: adj_sb_15_29,Exposure: adj_sb_15_29
+  T1 (1.4),Referent,"",Referent,"",Referent,"",  T1 (1.4),Referent,"",Referent,"",Referent,""
+  T2 (2.0),"2.04 (1.66, 2.52)",<0.001,"1.52 (1.22, 1.89)",<0.001,"1.51 (1.22, 1.89)",<0.001,  T2 (2.0),"2.04 (1.66, 2.52)",<0.001,"1.52 (1.22, 1.89)",<0.001,"1.51 (1.22, 1.89)",<0.001
+  T3 (Inf),"3.08 (2.52, 3.78)",<0.001,"1.99 (1.60, 2.47)",<0.001,"1.99 (1.60, 2.47)",<0.001,  T3 (Inf),"3.08 (2.52, 3.78)",<0.001,"1.99 (1.60, 2.47)",<0.001,"1.99 (1.60, 2.47)",<0.001
+  P-trend,<0.001,"",<0.001,"",<0.001,"",  P-trend,<0.001,"",<0.001,"",<0.001,""
+Exposure: adj_sb_30_Inf,Exposure: adj_sb_30_Inf,Exposure: adj_sb_30_Inf,Exposure: adj_sb_30_Inf,Exposure: adj_sb_30_Inf,Exposure: adj_sb_30_Inf,Exposure: adj_sb_30_Inf,Exposure: adj_sb_30_Inf,Exposure: adj_sb_30_Inf,Exposure: adj_sb_30_Inf,Exposure: adj_sb_30_Inf,Exposure: adj_sb_30_Inf,Exposure: adj_sb_30_Inf,Exposure: adj_sb_30_Inf
+  T1 (1.5),Referent,"",Referent,"",Referent,"",  T1 (1.5),Referent,"",Referent,"",Referent,""
+  T2 (2.7),"1.81 (1.44, 2.27)",<0.001,"1.53 (1.21, 1.94)",<0.001,"1.55 (1.23, 1.97)",<0.001,  T2 (2.7),"1.81 (1.44, 2.27)",<0.001,"1.53 (1.21, 1.94)",<0.001,"1.55 (1.23, 1.97)",<0.001
+  T3 (Inf),"5.30 (4.30, 6.56)",<0.001,"3.69 (2.97, 4.63)",<0.001,"3.75 (3.00, 4.71)",<0.001,  T3 (Inf),"5.30 (4.30, 6.56)",<0.001,"3.69 (2.97, 4.63)",<0.001,"3.75 (3.00, 4.71)",<0.001
+  P-trend,<0.001,"",<0.001,"",<0.001,"",  P-trend,<0.001,"",<0.001,"",<0.001,""
+Exposure: adj_mean_SB_bout,Exposure: adj_mean_SB_bout,Exposure: adj_mean_SB_bout,Exposure: adj_mean_SB_bout,Exposure: adj_mean_SB_bout,Exposure: adj_mean_SB_bout,Exposure: adj_mean_SB_bout,Exposure: adj_mean_SB_bout,Exposure: adj_mean_SB_bout,Exposure: adj_mean_SB_bout,Exposure: adj_mean_SB_bout,Exposure: adj_mean_SB_bout,Exposure: adj_mean_SB_bout,Exposure: adj_mean_SB_bout
+  T1 (4.8),Referent,"",Referent,"",Referent,"",  T1 (12.6),Referent,"",Referent,"",Referent,""
+  T2 (6.2),"1.77 (1.41, 2.23)",<0.001,"1.47 (1.16, 1.86)",0.0014,"1.48 (1.17, 1.87)",0.0012,  T2 (15.3),"2.02 (1.61, 2.54)",<0.001,"1.78 (1.41, 2.25)",<0.001,"1.79 (1.42, 2.26)",<0.001
+  T3 (Inf),"5.37 (4.36, 6.65)",<0.001,"3.80 (3.05, 4.77)",<0.001,"3.84 (3.08, 4.83)",<0.001,  T3 (Inf),"5.28 (4.28, 6.56)",<0.001,"4.01 (3.22, 5.03)",<0.001,"4.03 (3.23, 5.05)",<0.001
+  P-trend,<0.001,"",<0.001,"",<0.001,"",  P-trend,<0.001,"",<0.001,"",<0.001,""
+Exposure: adj_median_sb_bout,Exposure: adj_median_sb_bout,Exposure: adj_median_sb_bout,Exposure: adj_median_sb_bout,Exposure: adj_median_sb_bout,Exposure: adj_median_sb_bout,Exposure: adj_median_sb_bout,Exposure: adj_median_sb_bout,Exposure: adj_median_sb_bout,Exposure: adj_median_sb_bout,Exposure: adj_median_sb_bout,Exposure: adj_median_sb_bout,Exposure: adj_median_sb_bout,Exposure: adj_median_sb_bout
+  T1 (2.0),Referent,"",Referent,"",Referent,"",  T1 ( 8.4),Referent,"",Referent,"",Referent,""
+  T2 (2.1),"1.15 (0.94, 1.41)",0.1849,"1.02 (0.83, 1.26)",0.8334,"0.98 (0.77, 1.24)",0.8709,  T2 ( 9.8),"1.83 (1.47, 2.28)",<0.001,"1.68 (1.34, 2.10)",<0.001,"1.68 (1.34, 2.11)",<0.001
+  T3 (Inf),"2.49 (2.06, 3.02)",<0.001,"1.84 (1.51, 2.25)",<0.001,"1.81 (1.48, 2.22)",<0.001,  T3 (Inf),"4.23 (3.45, 5.22)",<0.001,"3.23 (2.60, 4.01)",<0.001,"3.23 (2.60, 4.02)",<0.001
+  P-trend,<0.001,"",<0.001,"",<0.001,"",  P-trend,<0.001,"",<0.001,"",<0.001,""
+Exposure: ubd_predicted,Exposure: ubd_predicted,Exposure: ubd_predicted,Exposure: ubd_predicted,Exposure: ubd_predicted,Exposure: ubd_predicted,Exposure: ubd_predicted,Exposure: ubd_predicted,Exposure: ubd_predicted,Exposure: ubd_predicted,Exposure: ubd_predicted,Exposure: ubd_predicted,Exposure: ubd_predicted,Exposure: ubd_predicted
+  T1 ( 9.0),Referent,"",Referent,"",Referent,"",  T1 (15.0),Referent,"",Referent,"",Referent,""
+  T2 (13.9),"2.00 (1.59, 2.51)",<0.001,"1.73 (1.37, 2.19)",<0.001,"1.78 (1.41, 2.25)",<0.001,  T2 (20.4),"1.86 (1.49, 2.33)",<0.001,"1.64 (1.31, 2.07)",<0.001,"1.70 (1.35, 2.14)",<0.001
+  T3 (Inf),"5.32 (4.31, 6.61)",<0.001,"4.01 (3.21, 5.03)",<0.001,"4.53 (3.60, 5.72)",<0.001,  T3 (Inf),"4.62 (3.76, 5.71)",<0.001,"3.61 (2.92, 4.50)",<0.001,"4.06 (3.25, 5.09)",<0.001
+  P-trend,<0.001,"",<0.001,"",<0.001,"",  P-trend,<0.001,"",<0.001,"",<0.001,""
+Exposure: fragmentation_index,Exposure: fragmentation_index,Exposure: fragmentation_index,Exposure: fragmentation_index,Exposure: fragmentation_index,Exposure: fragmentation_index,Exposure: fragmentation_index,Exposure: fragmentation_index,Exposure: fragmentation_index,Exposure: fragmentation_index,Exposure: fragmentation_index,Exposure: fragmentation_index,Exposure: fragmentation_index,Exposure: fragmentation_index
+  T1 ( 9.6),Referent,"",Referent,"",Referent,"",  T1 (3.9),Referent,"",Referent,"",Referent,""
+  T2 (12.8),"0.37 (0.31, 0.44)",<0.001,"0.43 (0.35, 0.51)",<0.001,"0.40 (0.33, 0.48)",<0.001,  T2 (4.8),"0.41 (0.34, 0.48)",<0.001,"0.47 (0.39, 0.56)",<0.001,"0.43 (0.36, 0.52)",<0.001
+  T3 (Inf),"0.20 (0.16, 0.24)",<0.001,"0.27 (0.22, 0.34)",<0.001,"0.25 (0.20, 0.31)",<0.001,  T3 (Inf),"0.21 (0.17, 0.26)",<0.001,"0.27 (0.22, 0.34)",<0.001,"0.24 (0.19, 0.30)",<0.001
+  P-trend,<0.001,"",<0.001,"",<0.001,"",  P-trend,<0.001,"",<0.001,"",<0.001,""
+Exposure: gini,Exposure: gini,Exposure: gini,Exposure: gini,Exposure: gini,Exposure: gini,Exposure: gini,Exposure: gini,Exposure: gini,Exposure: gini,Exposure: gini,Exposure: gini,Exposure: gini,Exposure: gini
+  T1 (0.6),Referent,"",Referent,"",Referent,"",  T1 (0.4),Referent,"",Referent,"",Referent,""
+  T2 (0.6),"2.02 (1.62, 2.54)",<0.001,"1.76 (1.40, 2.22)",<0.001,"1.82 (1.45, 2.30)",<0.001,  T2 (0.4),"1.88 (1.52, 2.33)",<0.001,"1.68 (1.35, 2.10)",<0.001,"1.72 (1.38, 2.15)",<0.001
+  T3 (Inf),"4.75 (3.85, 5.88)",<0.001,"3.75 (3.02, 4.69)",<0.001,"4.25 (3.40, 5.35)",<0.001,  T3 (Inf),"3.65 (2.98, 4.48)",<0.001,"3.03 (2.45, 3.75)",<0.001,"3.37 (2.71, 4.21)",<0.001
+  P-trend,<0.001,"",<0.001,"",<0.001,"",  P-trend,<0.001,"",<0.001,"",<0.001,""
+Exposure: alpha,Exposure: alpha,Exposure: alpha,Exposure: alpha,Exposure: alpha,Exposure: alpha,Exposure: alpha,Exposure: alpha,Exposure: alpha,Exposure: alpha,Exposure: alpha,Exposure: alpha,Exposure: alpha,Exposure: alpha
+  T1 (1.9),Referent,"",Referent,"",Referent,"",  T1 (2.2),Referent,"",Referent,"",Referent,""
+  T2 (2.1),"0.46 (0.39, 0.55)",<0.001,"0.52 (0.43, 0.62)",<0.001,"0.51 (0.42, 0.61)",<0.001,  T2 (2.5),"0.41 (0.34, 0.49)",<0.001,"0.48 (0.40, 0.57)",<0.001,"0.45 (0.37, 0.54)",<0.001
+  T3 (Inf),"0.23 (0.19, 0.28)",<0.001,"0.33 (0.26, 0.41)",<0.001,"0.32 (0.25, 0.39)",<0.001,  T3 (Inf),"0.21 (0.17, 0.25)",<0.001,"0.27 (0.21, 0.33)",<0.001,"0.25 (0.19, 0.31)",<0.001
+  P-trend,<0.001,"",<0.001,"",<0.001,"",  P-trend,<0.001,"",<0.001,"",<0.001,""

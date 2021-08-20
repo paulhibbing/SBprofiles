@@ -8,8 +8,8 @@ setwd(.)
 
 source("0_Input/6a_Exclusion_Functions.R")
 
-tree <- readRDS("2a_Cluster/rds/tree_1s.rds")
-forest <- readRDS("2a_Cluster/rds/forest_1s.rds")
+tree <- readRDS("2a_Cluster/rds/tree_1min.rds")
+forest <- readRDS("2a_Cluster/rds/forest_1min.rds")
 
 # > nrow(suppressMessages(load_and_reduce(age = 30)))
 # [1] 4146
@@ -22,7 +22,7 @@ d <-
       , c("id", "diabetes", "weight_status", "cvd_risk")
     ]
   ) %T>%
-  {stopifnot(nrow(.) == 4146, !anyNA(.$cvd_risk))} %>%
+  {stopifnot(nrow(.) == 4146, !anyNA(.$cvd_risk))} %>% ## See line 10
   within({
     high_risk = (cvd_risk > 0.20)
     accel_valid = sapply(accel_valid, isTRUE)
@@ -40,12 +40,12 @@ d <-
   ) %T>%
   {rm(tree, forest, envir = globalenv())}
 
-readRDS("2a_Cluster/rds/clustered_d_1s.rds") %>%
+readRDS("2a_Cluster/rds/clustered_d_1min.rds") %>%
 {setdiff(d$id, .$id)} %>%
 {d$id %in% .} %T>%
 {warning("Removing ", sum(.), " PCA outliers", call. = FALSE)} %>%
 {d[!., ]} %>%
-saveRDS("2b_Epi/0_Epi_data_1s.rds")
+saveRDS("2b_Epi/0_Epi_data_1min.rds")
 
 # Warning message:
 # Removing 186 PCA outliers

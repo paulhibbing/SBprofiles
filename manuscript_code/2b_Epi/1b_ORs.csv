@@ -4,23 +4,23 @@ Exposure: forest_profile,Exposure: forest_profile,Exposure: forest_profile,Expos
   Intermediate,"2.27 (1.85, 2.79)",<0.001,"1.82 (1.48, 2.26)",<0.001,"1.87 (1.51, 2.32)",<0.001
   Prolonged,"6.28 (5.06, 7.83)",<0.001,"4.35 (3.45, 5.50)",<0.001,"4.65 (3.67, 5.91)",<0.001
   P-trend,<0.001,"",<0.001,"",<0.001,""
-Exposure: mean_SB_bout_raw,Exposure: mean_SB_bout_raw,Exposure: mean_SB_bout_raw,Exposure: mean_SB_bout_raw,Exposure: mean_SB_bout_raw,Exposure: mean_SB_bout_raw,Exposure: mean_SB_bout_raw
+Exposure: mean_SB_bout_min,Exposure: mean_SB_bout_min,Exposure: mean_SB_bout_min,Exposure: mean_SB_bout_min,Exposure: mean_SB_bout_min,Exposure: mean_SB_bout_min,Exposure: mean_SB_bout_min
   T1 (4.7),Referent,"",Referent,"",Referent,""
   T2 (6.3),"1.95 (1.57, 2.43)",<0.001,"1.61 (1.29, 2.02)",<0.001,"1.66 (1.32, 2.08)",<0.001
   T3 (Inf),"5.28 (4.31, 6.51)",<0.001,"3.76 (3.03, 4.69)",<0.001,"4.13 (3.30, 5.18)",<0.001
   P-trend,<0.001,"",<0.001,"",<0.001,""
-Exposure: mean_SB_bout_residual,Exposure: mean_SB_bout_residual,Exposure: mean_SB_bout_residual,Exposure: mean_SB_bout_residual,Exposure: mean_SB_bout_residual,Exposure: mean_SB_bout_residual,Exposure: mean_SB_bout_residual
+Exposure: adj_mean_SB_bout,Exposure: adj_mean_SB_bout,Exposure: adj_mean_SB_bout,Exposure: adj_mean_SB_bout,Exposure: adj_mean_SB_bout,Exposure: adj_mean_SB_bout,Exposure: adj_mean_SB_bout
   T1 (4.8),Referent,"",Referent,"",Referent,""
-  T2 (6.8),"2.14 (1.74, 2.63)",<0.001,"1.79 (1.45, 2.21)",<0.001,"1.87 (1.51, 2.32)",<0.001
-  T3 (Inf),"3.35 (2.75, 4.10)",<0.001,"2.53 (2.06, 3.11)",<0.001,"2.74 (2.21, 3.42)",<0.001
+  T2 (6.3),"1.89 (1.51, 2.37)",<0.001,"1.57 (1.25, 1.98)",<0.001,"1.58 (1.26, 2.00)",<0.001
+  T3 (Inf),"5.75 (4.69, 7.10)",<0.001,"4.07 (3.27, 5.08)",<0.001,"4.11 (3.30, 5.13)",<0.001
   P-trend,<0.001,"",<0.001,"",<0.001,""
-Exposure: total_SB_residual,Exposure: total_SB_residual,Exposure: total_SB_residual,Exposure: total_SB_residual,Exposure: total_SB_residual,Exposure: total_SB_residual,Exposure: total_SB_residual
-  T1 ( 7.6),Referent,"",Referent,"",Referent,""
-  T2 ( 9.7),"1.91 (1.57, 2.31)",<0.001,"1.35 (1.10, 1.65)",0.0038,"1.35 (1.10, 1.65)",0.0038
-  T3 (Inf),"2.12 (1.75, 2.57)",<0.001,"1.38 (1.13, 1.70)",0.0020,"1.38 (1.13, 1.70)",0.0020
-  P-trend,<0.001,"",0.0036,"",0.0035,""
-Exposure: total_SB_raw,Exposure: total_SB_raw,Exposure: total_SB_raw,Exposure: total_SB_raw,Exposure: total_SB_raw,Exposure: total_SB_raw,Exposure: total_SB_raw
-  T1 (5.5),Referent,"",Referent,"",Referent,""
-  T2 (7.5),"1.83 (1.48, 2.26)",<0.001,"1.37 (1.10, 1.71)",0.0045,"1.47 (1.18, 1.83)",<0.001
-  T3 (Inf),"3.97 (3.27, 4.86)",<0.001,"2.59 (2.10, 3.22)",<0.001,"3.33 (2.64, 4.22)",<0.001
+Exposure: adj_total_SB,Exposure: adj_total_SB,Exposure: adj_total_SB,Exposure: adj_total_SB,Exposure: adj_total_SB,Exposure: adj_total_SB,Exposure: adj_total_SB
+  T1 (7.9),Referent,"",Referent,"",Referent,""
+  T2 (9.5),"2.02 (1.63, 2.51)",<0.001,"1.46 (1.16, 1.83)",0.0011,"1.46 (1.17, 1.83)",0.0010
+  T3 (Inf),"4.61 (3.77, 5.66)",<0.001,"2.63 (2.10, 3.31)",<0.001,"2.64 (2.11, 3.32)",<0.001
+  P-trend,<0.001,"",<0.001,"",<0.001,""
+Exposure: SB_hr_day,Exposure: SB_hr_day,Exposure: SB_hr_day,Exposure: SB_hr_day,Exposure: SB_hr_day,Exposure: SB_hr_day,Exposure: SB_hr_day
+  T1 (7.5),Referent,"",Referent,"",Referent,""
+  T2 (9.4),"1.69 (1.38, 2.07)",<0.001,"1.25 (1.01, 1.55)",0.0374,"1.36 (1.10, 1.68)",0.0054
+  T3 (Inf),"3.04 (2.52, 3.70)",<0.001,"1.93 (1.57, 2.38)",<0.001,"2.50 (1.97, 3.18)",<0.001
   P-trend,<0.001,"",<0.001,"",<0.001,""
