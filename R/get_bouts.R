@@ -72,7 +72,7 @@ sb_bout_dist_default <- function(
   ## If applicable, exclude bouts that overlap with invalid days
   ## Also calculate total wear time
 
-    total_wear_min <- sum(is_wear)
+    total_weartime_min <- sum(is_wear)
 
     if (!is.null(valid_indices)) {
 
@@ -87,7 +87,7 @@ sb_bout_dist_default <- function(
         }, valid_indices = valid_indices) %>%
         bouts[., ]
 
-      total_wear_min <-
+      total_weartime_min <-
         which(is_wear) %>%
         intersect(valid_indices) %>%
         length(.)
@@ -107,17 +107,18 @@ sb_bout_dist_default <- function(
       ., gsub("^X", "Q", names(.))
     ) %>%
     data.frame(
+      total_weartime_min = total_weartime_min,
+      n_SB_bouts = nrow(bouts),
+      min_bout_threshold = min_bout,
+      total_SB_min = sum(bouts$lengths),
+      .,
       IQR = .$Q75_bout - .$Q25_bout,
       IDR = .$Q90_bout - .$Q10_bout,
-      total_SB_raw = sum(bouts$lengths),
-      n_bouts = nrow(bouts),
-      total_wear_min = total_wear_min,
       stringsAsFactors = FALSE
     ) %>%
     within({
-      min_bout_threshold = min_bout
-      bouts_weartime = n_bouts / total_wear_min
-      SB_perc = total_SB_raw / total_wear_min
+      bout_frequency = n_SB_bouts / total_weartime_min * 60
+      SB_perc = total_SB_min / total_weartime_min
     }) %>%
     structure(
       .,
