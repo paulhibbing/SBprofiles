@@ -1,6 +1,6 @@
 ## What to expect here
 
-This is the part of `SBprofiles` where you will find the code we used
+This is the part of `SBprofiles` where you will find the code I used
 when writing our manuscript. This is not intended to help you implement
 the profiles, just to understand how they were developed. For usage help,
 see the [vignette](https://github.com/paulhibbing/SBprofiles/blob/main/vignettes/SBprofiles.pdf).

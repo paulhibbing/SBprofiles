@@ -14,6 +14,8 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+set.seed(610)
+Sys.setenv(`_R_S3_METHOD_REGISTRATION_NOTE_OVERWRITES_` = "false")
 ```
 
 # Introduction
@@ -40,6 +42,16 @@ if (!"remotes" %in% installed.packages()) install.packages("remotes")
 
 remotes::install_github("paulhibbing/SBprofiles")
 
+
+
+## If the above doesn't work, try the below. One or both of these extra arguments might help
+
+remotes::install_github(
+  repo = "paulhibbing/SBprofiles",
+  dependencies = FALSE,
+  build_vignettes = FALSE
+)
+
 ```
 
 # Using the Code
@@ -50,7 +62,10 @@ To use the code, you need some accelerometer data. For now, let's start with the
 
 data(example_data, package = "SBprofiles")
 
-# print(head(example_data)) #<-- Use this to view a few rows of the data
+## If you want a sense of how the data are structured,
+## un-comment and run the below. It will show you a few rows of data.
+ 
+# head(example_data)
 
 ```
 
@@ -118,9 +133,7 @@ When we used the `get_profile` function, R took care of the whole profiling proc
 
 SBprofiles::sb_bout_dist(
   is_sb = example_data$PAXINTEN <= 100, ## SB cut point
-  is_wear = SBprofiles::nhanes_wear(
-    example_data$PAXINTEN
-  ) ## Choi non-wear algorithm
+  is_wear = SBprofiles::nhanes_wear(example_data$PAXINTEN) ## Choi non-wear algorithm
 )
 
 ```
@@ -147,15 +160,12 @@ If we manually run `sb_bout_dist`, we can feed the output directly into `get_pro
 
 bout_info <- SBprofiles::sb_bout_dist(
   is_sb = example_data$PAXINTEN <= 100,
-  is_wear = SBprofiles::nhanes_wear(
-    example_data$PAXINTEN
-  )
+  is_wear = SBprofiles::nhanes_wear(example_data$PAXINTEN)
 )
 
 profile <- SBprofiles::get_profile(bout_info)
-## ^^ We can get more sophisticated output if we
-## add extra settings like we did before, but this
-## is fine for now
+## (We can get more sophisticated output if we add extra settings
+## like we did before, but this is fine for now)
 
 print(profile)
 
@@ -163,7 +173,7 @@ print(profile)
 
 # Managing your own accelerometer data
 
-Before we wrap up, we should address how to get your own data into R, and how to pre-process it so you can apply the SBprofiles code. That will ultimately depend on what type of monitor data you are using. I can't be exhaustive here, but I will give an example that will hopefully help. In the code below, I'll show how you might handle data from an ActiGraph data file. If you use a different monitor, the trick will be finding tools that allow you to use these same concepts on your specific data. In many cases, the tools are probably out there. If not, you might end up being the one to provide them by the time you're finished!
+Before wrapping up, let's address how you can get your own data into R, and how you can pre-process it so you can apply the SBprofiles code. That will ultimately depend on what type of monitor data you are using. I can't be exhaustive here, but I will give an example that will hopefully help. In the code below, I'll show how you might handle data from an ActiGraph data file. If you use a different monitor, the trick will be finding tools that allow you to use these same concepts on your specific data. In many cases, the tools are probably out there. If not, you might end up being the one to provide them by the time you're finished!
 
 ```{r AG, cache=TRUE}
 
@@ -199,6 +209,7 @@ Before we wrap up, we should address how to get your own data into R, and how to
       TimeStamp = as.character(Timestamp)
     }) %>%
     
+    
     ## Now run the algorithm
     PhysicalActivity::wearingMarking(
       perMinuteCts = 1, TS = "TimeStamp", cts = "Axis1",
@@ -229,4 +240,4 @@ Before we wrap up, we should address how to get your own data into R, and how to
 
 ```
 
-Thank you for following along. Again, let me know on GitHub if there are improvements we can make.
+That's it! Thanks for following along. Again, let me know on GitHub if there are improvements I can make.
