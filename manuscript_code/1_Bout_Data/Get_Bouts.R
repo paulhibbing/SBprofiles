@@ -13,113 +13,13 @@
   d <-
     load_and_reduce(
       criteria = c(
-        "accel_exists", "age", "pregnancy", "accel_valid"
+        "accel_exists", "age", "pregnancy", "accel_invalid"
       ),
       age = 25
     ) %T>%
     {rm(list = ls(envir = globalenv()), envir = globalenv())}
 
-# Bout function helpers ---------------------------------------------------
-
-  sb_bouts <- function(d, a, sb, min_bout, valid_indices, probs) {
-
-    ## Determine all SB bouts
-
-      bouts <-
-        {a$PAXINTEN <= sb} %>%
-        paste(a$is_wear) %>%
-        PAutilities::index_runs(.) %>%
-        within({values = as.character(values)}) %>%
-        .[.$values=="TRUE TRUE", ] %>%
-        .[.$lengths >= min_bout, ]
-
-    ## Exclude bouts that overlap with invalid days
-
-      bouts %<>%
-        nrow(.) %>%
-        seq(.) %>%
-        split(bouts, .) %>%
-        sapply(function(x, valid_indices) {
-          seq(x$start_index, x$end_index) %>%
-          {. %in% valid_indices} %>%
-          all(.)
-        }, valid_indices = valid_indices) %>%
-        bouts[., ]
-
-    ## Assemble features
-
-      ## This is unnecessary, and the final test has always passed
-      # a <-
-      #   bouts[ ,c("start_index", "end_index")] %>%
-      #   as.list(.)  %>%
-      #   {mapply(
-      #     seq,
-      #     from = .$start_index,
-      #     to = .$end_index,
-      #     SIMPLIFY = FALSE
-      #   )} %>%
-      #   do.call(c, .) %>%
-      #   unique(.) %>%
-      #   a[., ] %T>%
-      #   {stopifnot(nrow(.) == sum(bouts$lengths))}
-
-      bouts$lengths %>%
-      quantile(probs = probs) %>%
-      t(.) %>%
-      data.frame(.) %>%
-      stats::setNames(
-        ., gsub("\\.$", "_bout", names(.))
-      ) %>%
-      stats::setNames(
-        ., gsub("^X", "Q", names(.))
-      ) %>%
-      {data.frame(
-        id = a$SEQN[1], .,
-        IQR = .$Q75_bout - .$Q25_bout,
-        IDR = .$Q90_bout - .$Q10_bout,
-        total_SB_raw = sum(bouts$lengths),
-        n_bouts = nrow(bouts),
-        min_bout_threshold = min_bout,
-        stringsAsFactors = FALSE
-      )} %>%
-      merge(d, .)
-
-  }
-
-  mvpa_bouts <- function(d, a, mvpa, valid_indices) {
-
-    ## Determine all bouts
-
-      bouts <-
-        {a$PAXINTEN >= mvpa} %>%
-        paste(a$is_wear) %>%
-        PAutilities::index_runs(.) %>%
-        within({values = as.character(values)}) %>%
-        .[.$values=="TRUE TRUE", ]
-
-    ## Exclude bouts that overlap with invalid days
-
-      if (nrow(bouts) > 0) {
-
-        bouts %<>%
-          nrow(.) %>%
-          seq(.) %>%
-          split(bouts, .) %>%
-          sapply(function(x, valid_indices) {
-            seq(x$start_index, x$end_index) %>%
-            {. %in% valid_indices} %>%
-            all(.)
-          }, valid_indices = valid_indices) %>%
-          bouts[., ]
-
-      }
-
-    ## Finish up
-
-      sum(bouts$lengths) %>%
-      data.frame(d, total_MVPA_raw = ., stringsAsFactors = FALSE)
-
-  }
+  source("1_Bout_Data/zz_functions.R")
 
 # Bout function -----------------------------------------------------------
 
@@ -132,11 +32,7 @@
     ), sb = 100, mvpa = 1952
   ) {
 
-    ## Set up, read, and run Choi
-
-      timer <- PAutilities::manage_procedure(
-        "Start", "\rProcessing row", n, "of", N
-      )
+    ## Read file and run Choi algorithm
 
       a <- readRDS(d$accel_file)
 
@@ -152,7 +48,7 @@
           {.$wearing %in% "w"}
       ))
 
-    ## Determine valid days (and total wear time)
+    ## Determine valid days and wear time
 
       valid_days <-
         tapply(a$is_wear, a$PAXDAY, sum) %>%
@@ -165,7 +61,7 @@
         (a$PAXDAY %in% valid_days) %>%
         {seq(.)[.]}
 
-      total_wear_min <-
+      total_weartime_min <-
         tapply(a$is_wear, a$PAXDAY, sum) %>%
         .[names(.) %in% valid_days] %>%
         sum(.)
@@ -173,73 +69,13 @@
     ## Get bout information
 
       d %>%
-      sb_bouts(a, sb, min_bout, valid_indices, probs) %>%
-      mvpa_bouts(a, mvpa, valid_indices) %>%
       within({
-        total_wear_min = total_wear_min
+        weartime_hr_day = total_weartime_min / length(valid_days) / 60
+        total_weartime_min = total_weartime_min
         n_days = length(valid_days)
       }) %>%
-      within({
-        bouts_weartime = n_bouts / total_wear_min
-        daily_wear_h = (total_wear_min / n_days) / 60
-      }) %>%
-      within({
-        bouts_1440 = round(bouts_weartime * 1440, 0)
-      })
-
-  }
-
-# Adjustment and formatting functions -------------------------------------
-
-  residual_adjust <- function(d, variable, confounder, label) {
-
-    if ("zznewvariable" %in% names(d)) stop(
-      "`d` cannot have a variable called `zznewvariable`"
-    )
-
-    cat("\n")
-
-    paste(
-      "Performing residual adjustment for", variable,
-      "based on", confounder
-    ) %>%
-    print(.)
-
-    paste0(variable, " ~ ", confounder) %>%
-    as.formula(.) %>%
-    lm(d) %>%
-    {.$residuals + mean(.$fitted.values)} %>%
-    {within(d, {zznewvariable = .})} %>%
-    stats::setNames(
-      ., gsub("^zznewvariable$", label, names(.))
-    )
-
-  }
-
-  final_format <- function(d) {
-
-    c(d, make.row.names = FALSE) %>%
-    do.call(rbind, .) %>%
-
-    residual_adjust("total_SB_raw", "total_wear_min", "total_SB_residual") %>%
-    within({
-      SB_perc = total_SB_raw / total_wear_min
-    }) %>%
-    within({
-      mean_SB_bout_residual = total_SB_residual / n_bouts
-      mean_SB_bout_raw = total_SB_raw / n_bouts
-      SB_1440 = round(SB_perc * 1440, 0)
-    }) %>%
-
-    residual_adjust("total_MVPA_raw", "total_wear_min", "total_MVPA_residual")  %>%
-    within({
-      MVPA_perc = total_MVPA_raw / total_wear_min
-    }) %>%
-    within({
-      MVPA_min_per_day_residual = total_MVPA_residual / n_days
-      MVPA_min_per_day_raw = total_MVPA_raw / n_days
-      MVPA_1440 = round(MVPA_perc * 1440, 0)
-    })
+      sb_bouts(a, sb, min_bout, valid_indices, probs) %>%
+      mvpa_bouts(a, mvpa, valid_indices)
 
   }
 
