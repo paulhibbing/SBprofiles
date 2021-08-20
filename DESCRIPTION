@@ -21,11 +21,12 @@ Suggests:
     knitr
 Imports: 
     magrittr,
-    utils,
-    tree,
+    PAutilities,
     randomForest,
     stats,
-    PAutilities
+    tree,
+    utils
+Remotes: paulhibbing/PAutilities
 RoxygenNote: 7.1.1
 Depends: 
     R (>= 3.5.0)

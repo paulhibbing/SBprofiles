@@ -14,6 +14,10 @@
 #' nhanes_wear(example_data$PAXINTEN)
 nhanes_wear <- function(counts) {
 
+  if (!requireNamespace("PhysicalActivity", quietly = TRUE)) {
+    stop("Run `install.packages(\"PhysicalActivity\") and try again")
+  }
+
   invisible(utils::capture.output(
 
     result <-

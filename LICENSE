@@ -15,4 +15,5 @@
 
 - In short, code and derivative data are under the MIT license, while source
   data (particularly the example_data object) are in the public domain. See also:
-  https://github.com/paulhibbing/SBprofiles/blob/main/LICENSE.md
+  * https://github.com/paulhibbing/SBprofiles/blob/main/LICENSE.md and
+  * https://github.com/paulhibbing/SBprofiles/tree/main/inst/CITATION
