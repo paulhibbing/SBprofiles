@@ -2,7 +2,7 @@
 
 There are two things going on here:
 
-1. **Original code:** If you're interested in reviewing or adapting the code
+1. **Original code:** If you're interested in reviewing or adapting the R code
   we used when writing the manuscript, check out the
   [manuscript_code directory](https://github.com/paulhibbing/SBprofiles/tree/main/manuscript_code).
 
