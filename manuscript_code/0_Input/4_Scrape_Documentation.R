@@ -89,17 +89,27 @@
 
 # Implementation ----------------------------------------------------------
 
-  ## Note: The data sets are being assembled using only variables that occurred
+  ## Note: For our analyses, we are only using variables that occurred
   ## in both the 2003-2004 cycle and the 2005-2006 cycle. Therefore, the
-  ## approach here is to retrieve documentation from 2003-2004 only. The only
-  ## tricky thing is that some of the 2003-2004 variables were not collected in
-  ## 2005-2006, meaning this documentation will have a few EXTRA variables.
+  ## approach here is to retrieve documentation from 2003-2004 only. The
+  ## exception is accelerometer documentation (PAXRAW), since an extra
+  ## variable (PAXSTEP) was included for each participant in 2005-2006.
+  ## Apart from that, a couple other considerations: First, While the
+  ## *analyses* will be focused on variables that were common to both
+  ## cycles, this *documentation* will pull *all* variables from 2003-2004,
+  ## even the ones that were not repeated in 2005-2006. Additionally, the
+  ## items that *were* included in both cycles may were not necessarily
+  ## delivered identically (e.g., different survey response options).
+  ## So, take this documentation with a grain of salt -- it should give
+  ## a good overview of the data, but not a comprehensive guide. You'll
+  ## need to peruse the website (or modify this code) if that's what
+  ## you're after.
 
   urls <- c(
     "https://wwwn.cdc.gov/Nchs/Nhanes/2003-2004/DEMO_C.htm",
     "https://wwwn.cdc.gov/Nchs/Nhanes/2003-2004/BPX_C.htm",
     "https://wwwn.cdc.gov/Nchs/Nhanes/2003-2004/BMX_C.htm",
-    "https://wwwn.cdc.gov/Nchs/Nhanes/2003-2004/PAXRAW_C.htm",
+    "https://wwwn.cdc.gov/Nchs/Nhanes/2005-2006/PAXRAW_D.htm",
     "https://wwwn.cdc.gov/Nchs/Nhanes/2003-2004/L13AM_C.htm",
     "https://wwwn.cdc.gov/Nchs/Nhanes/2003-2004/L13_C.htm",
     "https://wwwn.cdc.gov/Nchs/Nhanes/2003-2004/L10_C.htm",

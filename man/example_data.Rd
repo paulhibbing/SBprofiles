@@ -11,8 +11,10 @@ An object of class \code{data.frame} with 10080 rows and 8 columns.
 example_data
 }
 \description{
-This is a minute-by-minute data set for one participant in the National Health
-and Nutrition Examination Survey (NHANES). For details, see the
-\href{https://wwwn.cdc.gov/Nchs/Nhanes/2003-2004/PAXRAW_C.htm#Codebook}{NHANES documentation}.
+This is a minute-by-minute data set for one participant in the 2003-2006
+National Health and Nutrition Examination Survey (NHANES). For details, see the
+\href{https://wwwn.cdc.gov/Nchs/Nhanes/2005-2006/PAXRAW_D.htm}{NHANES documentation}.
+(Link is to the 2005-2006 documentation, as an additional variable (PAXSTEP)
+was included in that cycle.)
 }
 \keyword{datasets}
