@@ -4,6 +4,7 @@
 \alias{get_profile}
 \alias{get_profile.bout}
 \alias{get_profile.data.frame}
+\alias{get_profile.list}
 \title{Implement the sedentary profiles}
 \usage{
 get_profile(object, ...)
@@ -15,9 +16,12 @@ get_profile(object, ...)
   method = c("both", "decisionTree", "randomForest"),
   id = NULL,
   counts,
+  wear,
   sb = 100,
   ...
 )
+
+\method{get_profile}{list}(object, method = c("both", "decisionTree", "randomForest"), ...)
 }
 \arguments{
 \item{object}{input (either data frame or output from
@@ -33,6 +37,11 @@ in data frame method)}
 
 \item{counts}{character scalar. Column name of the variable to use when
 classifying sedentary behavior}
+
+\item{wear}{character scalar [optional]. Column name of the variable to use
+for determining wear time (logical vector with \code{TRUE} for wear time
+minutes). If no value is provided, \code{\link{nhanes_wear}} is invoked on
+the \code{counts} column}
 
 \item{sb}{integer. The cut point to use for classifying sedentary behavior}
 }

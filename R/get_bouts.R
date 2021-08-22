@@ -12,6 +12,10 @@
 #'   10+ hours of wear time on 4+ days)
 #' @param probs numeric vector. Percentiles to calculate (all values must be
 #'   between 0 and 1)
+#' @param simplify logical. If passing a data frame, setting to \code{FALSE}
+#'   will return separate bout objects that can be passed into
+#'   \code{\link{get_profile}}). Setting to \code{TRUE} will return an
+#'   aggregated data frame through \code{rbind} and \code{\link{id_bind}}.
 #'
 #' @return A bout object (data frame of distribution features)
 #' @inheritParams get_profile
@@ -34,7 +38,7 @@ sb_bout_dist <- function(
     0.1, 0.2, 0.25,
     seq(0.3, 0.7, 0.1),
     0.75, 0.8, 0.9
-  )
+  ), simplify = TRUE
 ) {
 
   if (is.null(df)) {
@@ -48,7 +52,8 @@ sb_bout_dist <- function(
   } else {
 
     sb_bout_dist_df(
-      df, counts, id, sb, min_bout, valid_indices, probs
+      df, counts, wear, id, sb, min_bout,
+      valid_indices, probs, simplify
     )
 
   }
@@ -138,10 +143,13 @@ sb_bout_dist_default <- function(
 #' @inheritParams sb_bout_dist
 #' @keywords internal
 sb_bout_dist_df <- function(
-  df, counts, wear, id, sb, min_bout, valid_indices, probs
+  df, counts, wear, id, sb, min_bout,
+  valid_indices, probs, simplify
 ) {
 
   ## Setup
+
+    if (missing(wear)) wear <- NULL
 
     df %<>%
       counts_verify(counts) %>%
@@ -151,23 +159,31 @@ sb_bout_dist_df <- function(
         } else {
           seq(nrow(.)) %in% valid_indices
         }
-      })}
+      })} %>%
+      check_wear_time(id, wear)
 
-  ## Insert functionalized version of new code from get_profile.
-  df %>%
-  id_verify(id) %>%
-  lapply(
-    function(x, sb, min_bout, probs) {
-      sb_bout_dist_default(
-        is_sb = x$counts <= sb,
-        is_wear = nhanes_wear(x$counts),
-        min_bout = min_bout,
-        valid_indices = which(x$valid_index),
-        probs = probs
-      )},
-    sb, min_bout, probs
-  ) %>%
-  do.call(rbind, .) %>%
-  id_bind(id)
+  ## Get the bout distributions
+
+    df %<>% lapply(
+      function(x, sb, min_bout, probs) {
+        sb_bout_dist_default(
+          is_sb = x$counts <= sb,
+          is_wear = x$is_wear,
+          min_bout = min_bout,
+          valid_indices = which(x$valid_index),
+          probs = probs
+        )
+      }, sb, min_bout, probs
+    )
+
+  ## Finish up
+
+    if (simplify) {
+      df %<>%
+        do.call(rbind, .) %>%
+        id_bind(id)
+    }
+
+    df
 
 }

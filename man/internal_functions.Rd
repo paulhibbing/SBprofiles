@@ -11,7 +11,17 @@
 \usage{
 sb_bout_dist_default(is_sb, is_wear, min_bout, valid_indices, probs)
 
-sb_bout_dist_df(df, counts, id, sb, min_bout, valid_indices, probs)
+sb_bout_dist_df(
+  df,
+  counts,
+  wear,
+  id,
+  sb,
+  min_bout,
+  valid_indices,
+  probs,
+  simplify
+)
 
 id_verify(object, id)
 
@@ -41,10 +51,20 @@ between 0 and 1)}
 \item{counts}{character scalar. Column name of the variable to use when
 classifying sedentary behavior}
 
+\item{wear}{character scalar [optional]. Column name of the variable to use
+for determining wear time (logical vector with \code{TRUE} for wear time
+minutes). If no value is provided, \code{\link{nhanes_wear}} is invoked on
+the \code{counts} column}
+
 \item{id}{character scalar (optional). Column name on which to divide
 \code{object} (if a data frame) into a list of separate objects}
 
 \item{sb}{integer. The cut point to use for classifying sedentary behavior}
+
+\item{simplify}{logical. If passing a data frame, setting to \code{FALSE}
+will return separate bout objects that can be passed into
+\code{\link{get_profile}}). Setting to \code{TRUE} will return an
+aggregated data frame through \code{rbind} and \code{\link{id_bind}}.}
 
 \item{result}{an output data frame that may need id-based formatting}
 }

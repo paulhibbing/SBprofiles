@@ -86,38 +86,20 @@ get_profile.bout <- function(
 #'   the \code{counts} column
 #' @param sb integer. The cut point to use for classifying sedentary behavior
 #' @export
-get_profile.data.frame = function(
+get_profile.data.frame <- function(
   object, method = c("both", "decisionTree", "randomForest"),
   id = NULL, counts, wear, sb = 100, ...
 ) {
 
-  ## Setup
+  ## Setup (ensure presence of variables called `counts` and `is_wear`)
 
     method <- match.arg(method)
-    object %<>% counts_verify(counts)
 
-  ## Odd logic -- if `wear` is specified, deal with it up front, otherwise,
-  ## after conversion to a list via `id_verify`
+    if (missing(wear)) wear <- NULL
 
-    if (!missing(wear)) {
-      stopifnot(wear %in% names(object))
-      location_of_wear_variable <- which(names(object) == wear)
-      stopifnot(length(location_of_wear_variable) == 1)
-      names(object)[location_of_wear_variable] <- "is_wear"
-    }
-
-    object %<>% id_verify(id)
-
-    if (missing(wear)) {
-      message(
-        "Applying Choi non-wear algorithm (separately for",
-        " each chunk specified by `id`, if applicable)"
-      )
-      object %<>%
-        lapply("[[", "counts") %>%
-        lapply(nhanes_wear) %>%
-        {mapply(data.frame, object, is_wear = ., SIMPLIFY = FALSE)}
-    }
+    object %<>%
+      counts_verify(counts) %>%
+      check_wear_time(id, wear)
 
   ## Now get the profiles
 
@@ -128,7 +110,8 @@ get_profile.data.frame = function(
           is_wear = x$is_wear,
           ...
         )
-      }, sb, ...) %>%
+      }, sb, ...
+    ) %>%
     lapply(get_profile, method) %>%
     lapply(function(x, method) {
       if (length(x) > 1)
@@ -138,6 +121,29 @@ get_profile.data.frame = function(
     }, method) %>%
     do.call(rbind, .) %>%
     id_bind(id)
+
+}
+
+#' @rdname get_profile
+#' @export
+get_profile.list <- function(
+  object, method = c("both", "decisionTree", "randomForest"), ...
+) {
+
+  stopifnot(sapply(object, inherits, c("bout1", "bout5")))
+  method <- match.arg(method)
+
+  object %<>% lapply(get_profile, method = method)
+
+  if (method == "both") {
+    object %>%
+    lapply(c, stringsAsFactors = FALSE) %>%
+    lapply(do.call, what = data.frame) %>%
+    do.call(rbind, .) %>%
+    as.list(.)
+  } else {
+    unlist(object, use.names = FALSE)
+  }
 
 }
 
