@@ -80,36 +80,64 @@ get_profile.bout <- function(
 #'   \code{object} (if a data frame) into a list of separate objects
 #' @param counts character scalar. Column name of the variable to use when
 #'   classifying sedentary behavior
+#' @param wear character scalar [optional]. Column name of the variable to use
+#'   for determining wear time (logical vector with \code{TRUE} for wear time
+#'   minutes). If no value is provided, \code{\link{nhanes_wear}} is invoked on
+#'   the \code{counts} column
 #' @param sb integer. The cut point to use for classifying sedentary behavior
 #' @export
 get_profile.data.frame = function(
   object, method = c("both", "decisionTree", "randomForest"),
-  id = NULL, counts, sb = 100, ...
+  id = NULL, counts, wear, sb = 100, ...
 ) {
 
-  method <- match.arg(method)
+  ## Setup
 
-  object %<>%
-    counts_verify(counts) %>%
-    id_verify(id)
+    method <- match.arg(method)
+    object %<>% counts_verify(counts)
 
-  lapply(object, function(x, sb, ...) {
-      sb_bout_dist(
-        df = NULL,
-        is_sb = x$counts <= sb,
-        is_wear = nhanes_wear(x$counts),
-        ...
+  ## Odd logic -- if `wear` is specified, deal with it up front, otherwise,
+  ## after conversion to a list via `id_verify`
+
+    if (!missing(wear)) {
+      stopifnot(wear %in% names(object))
+      location_of_wear_variable <- which(names(object) == wear)
+      stopifnot(length(location_of_wear_variable) == 1)
+      names(object)[location_of_wear_variable] <- "is_wear"
+    }
+
+    object %<>% id_verify(id)
+
+    if (missing(wear)) {
+      message(
+        "Applying Choi non-wear algorithm (separately for",
+        " each chunk specified by `id`, if applicable)"
       )
-    }, sb, ...) %>%
-  lapply(get_profile, method) %>%
-  lapply(function(x, method) {
-    if (length(x) > 1)
-      do.call(data.frame, x)
-    else
-      stats::setNames(data.frame(x), method)
-  }, method) %>%
-  do.call(rbind, .) %>%
-  id_bind(id)
+      object %<>%
+        lapply("[[", "counts") %>%
+        lapply(nhanes_wear) %>%
+        {mapply(data.frame, object, is_wear = ., SIMPLIFY = FALSE)}
+    }
+
+  ## Now get the profiles
+
+    lapply(object, function(x, sb, ...) {
+        sb_bout_dist(
+          df = NULL,
+          is_sb = x$counts <= sb,
+          is_wear = x$is_wear,
+          ...
+        )
+      }, sb, ...) %>%
+    lapply(get_profile, method) %>%
+    lapply(function(x, method) {
+      if (length(x) > 1)
+        do.call(data.frame, x)
+      else
+        stats::setNames(data.frame(x), method)
+    }, method) %>%
+    do.call(rbind, .) %>%
+    id_bind(id)
 
 }
 
