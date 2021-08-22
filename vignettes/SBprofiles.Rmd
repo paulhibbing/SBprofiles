@@ -79,7 +79,7 @@ Before we go further, you may want to familiarize yourself with the main functio
 
 ```
 
-From here, let's see how we would determine the sedentary profile for the data we loaded earlier. It ends up being fairly easy. All we have to do is run the following command:
+From here, let's see how we would determine the sedentary profile for the data we loaded earlier. It ends up being fairly easy. All we have to do is run the command below. Note that the program tells us it's calculating non-wear using the Choi algorithm. This will be done automatically unless you tell it you have already run a non-wear algorithm. To do that, just tell it where the information is stored by adding a call to 'wear', like the commented line below. (The commented line would not work in this case because we have not created a variable called 'is_wear'. However, we could have done so using the 'nhanes_wear' function.)
 
 ```{r bouts, cache=TRUE}
 
@@ -88,6 +88,7 @@ SBprofiles::get_profile(
   method = "both", ## Can be 'decisionTree', 'randomForest', or 'both'
   id = NULL, ## This could name a stratifying variable if applicable
   counts = "PAXINTEN", ## Name the activity counts variable
+  #wear = "is_wear", ## Name the wear time variable (TRUE for wear time, else FALSE)
   sb = 100, ## Provide the SB cut point
   min_bout = 1, ## Minimum bout length. Must be 1 or 5
   valid_indices = NULL ## Optional vector of indices that meet wear time criteria
@@ -215,21 +216,19 @@ Before wrapping up, let's address how you can get your own data into R, and how 
       perMinuteCts = 1, TS = "TimeStamp", cts = "Axis1",
       newcolname = "is_wear", getMinuteMarking = TRUE
     ) %>%
+  
+    ## Format the wear time variable to a logical vector
+    within({
+      is_wear = is_wear %in% "w" ## use %in% rather than == because of how it handles NA
+    }) %>%
     
     ## Get the sedentary profile
     cbind(., SBprofiles::get_profile(
-      ., counts = "Axis1", method = "decisionTree"
+      ., counts = "Axis1", wear = "is_wear", method = "decisionTree"
     )) %>%
-
+  
     ## Take the `TimeStamp` variable back out
     .[ ,names(.) != "TimeStamp"] %>%
-    
-    ## Convert the `is_wear` variable to logical
-    within({
-      is_wear = ifelse(
-        as.character(is_wear) == "nw", FALSE, TRUE
-      )
-    }) %>%
     
     ## Rename the sedentary profile variable from 'decisionTree' to 'SB_profile'
     stats::setNames(., gsub("^decisionTree$", "SB_profile", names(.)))
