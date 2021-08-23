@@ -18,6 +18,7 @@ get_profile(object, ...)
   counts,
   wear,
   sb = 100,
+  valid_indices = NULL,
   ...
 )
 
@@ -44,6 +45,10 @@ minutes). If no value is provided, \code{\link{nhanes_wear}} is invoked on
 the \code{counts} column}
 
 \item{sb}{integer. The cut point to use for classifying sedentary behavior}
+
+\item{valid_indices}{integer vector (optional) specifying which indices of
+\code{is_sb} and {is_wear} correspond to valid measurement days (e.g. with
+10+ hours of wear time on 4+ days)}
 }
 \value{
 one or more profile assignments

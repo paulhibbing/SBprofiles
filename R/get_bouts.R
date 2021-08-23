@@ -7,9 +7,6 @@
 #' @param is_wear logical vector reflecting minute-by-minute wear
 #'   classifications (\code{TRUE} for wearing and \code{FALSE} for not wearing)
 #' @param min_bout integer scalar. Threshold for a run to qualify as a bout
-#' @param valid_indices integer vector (optional) specifying which indices of
-#'   \code{is_sb} and {is_wear} correspond to valid measurement days (e.g. with
-#'   10+ hours of wear time on 4+ days)
 #' @param probs numeric vector. Percentiles to calculate (all values must be
 #'   between 0 and 1)
 #' @param simplify logical. If passing a data frame, setting to \code{FALSE}
