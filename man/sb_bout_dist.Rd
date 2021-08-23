@@ -19,7 +19,7 @@ sb_bout_dist(
 )
 }
 \arguments{
-\item{df}{data frame input (for vectorized operations)}
+\item{df}{data frame of accelerometer input}
 
 \item{is_sb}{logical vector reflecting minute-by-minute classifications
 (\code{TRUE} for sedentary behavior and \code{FALSE} for non-sedentary

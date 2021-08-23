@@ -1,6 +1,6 @@
 #' Extract features to summarize a participant's bout duration distribution
 #'
-#' @param df data frame input (for vectorized operations)
+#' @param df data frame of accelerometer input
 #' @param is_sb logical vector reflecting minute-by-minute classifications
 #'   (\code{TRUE} for sedentary behavior and \code{FALSE} for non-sedentary
 #'   behavior)

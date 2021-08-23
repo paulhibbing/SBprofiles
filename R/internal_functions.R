@@ -9,11 +9,8 @@
 NULL
 
 #' @rdname internal_functions
-
-#'
-#' @param df data frame of accelerometer input
 #' @inheritParams get_profile
-#'
+#' @inheritParams sb_bout_dist
 #' @keywords internal
 check_wear_time <- function(df, id, wear) {
 
