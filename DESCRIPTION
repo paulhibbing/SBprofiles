@@ -1,7 +1,7 @@
 Package: SBprofiles
 Type: Package
 Title: Learn about and use sedentary behavior profiles
-Version: 0.1.0.9000
+Version: 0.1.0
 Authors@R: c(
     person(c("Paul", "R."), "Hibbing", email = "paulhibbing@gmail.com",
 		  role = c("aut","cre")),
