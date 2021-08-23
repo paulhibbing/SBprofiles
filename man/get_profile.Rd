@@ -15,8 +15,8 @@ get_profile(object, ...)
   object,
   method = c("both", "decisionTree", "randomForest"),
   id = NULL,
-  counts,
-  wear,
+  counts = NULL,
+  wear = NULL,
   sb = 100,
   valid_indices = NULL,
   ...
@@ -37,7 +37,7 @@ in data frame method)}
 \code{object} (if a data frame) into a list of separate objects}
 
 \item{counts}{character scalar. Column name of the variable to use when
-classifying sedentary behavior}
+classifying sedentary behavior (and wear time, depending on the function)}
 
 \item{wear}{character scalar [optional]. Column name of the variable to use
 for determining wear time (logical vector with \code{TRUE} for wear time

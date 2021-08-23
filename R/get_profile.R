@@ -78,7 +78,7 @@ get_profile.bout <- function(
 #' @param id character scalar (optional). Column name on which to divide
 #'   \code{object} (if a data frame) into a list of separate objects
 #' @param counts character scalar. Column name of the variable to use when
-#'   classifying sedentary behavior
+#'   classifying sedentary behavior (and wear time, depending on the function)
 #' @param wear character scalar [optional]. Column name of the variable to use
 #'   for determining wear time (logical vector with \code{TRUE} for wear time
 #'   minutes). If no value is provided, \code{\link{nhanes_wear}} is invoked on
@@ -90,39 +90,31 @@ get_profile.bout <- function(
 #' @export
 get_profile.data.frame <- function(
   object, method = c("both", "decisionTree", "randomForest"),
-  id = NULL, counts, wear, sb = 100, valid_indices = NULL, ...
+  id = NULL, counts = NULL, wear = NULL, sb = 100, valid_indices = NULL, ...
 ) {
 
-  ## Setup (ensure presence of variables called `counts` and `is_wear`)
+  method <- match.arg(method)
 
-    method <- match.arg(method)
-
-    if (missing(wear)) wear <- NULL
-
-    object %<>%
-      counts_verify(counts) %>%
-      check_wear_time(id, wear)
-
-  ## Now get the profiles
-
-    lapply(object, function(x, sb, ...) {
-        sb_bout_dist(
-          df = NULL,
-          is_sb = x$counts <= sb,
-          is_wear = x$is_wear,
-          ...
-        )
-      }, sb, ...
-    ) %>%
-    lapply(get_profile, method) %>%
-    lapply(function(x, method) {
-      if (length(x) > 1)
-        do.call(data.frame, x)
-      else
-        stats::setNames(data.frame(x), method)
-    }, method) %>%
-    do.call(rbind, .) %>%
-    id_bind(id)
+  object %>%
+  df_check_format(counts, valid_indices, id, wear) %>%
+  lapply(
+    function(x, sb, ...) {sb_bout_dist(
+      df = NULL,
+      is_sb = x$counts <= sb,
+      is_wear = x$is_wear,
+      valid_indices = which(x$valid_index),
+      ...
+    )},
+    sb, ...
+  ) %>%
+  lapply(get_profile, method) %>%
+  lapply(function(x, method) {
+    if (length(x) > 1)
+      do.call(data.frame, x)
+    else
+      stats::setNames(data.frame(x), method)
+  }, method) %>%
+  id_bind(id)
 
 }
 

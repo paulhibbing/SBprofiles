@@ -30,12 +30,13 @@
 #' )
 sb_bout_dist <- function(
   df = NULL, is_sb, is_wear, min_bout = 5,
-  valid_indices = NULL, id = NULL, counts, wear, sb = 100,
+  valid_indices = NULL, id = NULL, counts = NULL,
+  wear = NULL, sb = 100, simplify = TRUE,
   probs = c(
     0.1, 0.2, 0.25,
     seq(0.3, 0.7, 0.1),
     0.75, 0.8, 0.9
-  ), simplify = TRUE
+  )
 ) {
 
   if (is.null(df)) {
@@ -50,7 +51,7 @@ sb_bout_dist <- function(
 
     sb_bout_dist_df(
       df, counts, wear, id, sb, min_bout,
-      valid_indices, probs, simplify
+      valid_indices, simplify, probs
     )
 
   }
@@ -61,7 +62,12 @@ sb_bout_dist <- function(
 #' @inheritParams sb_bout_dist
 #' @keywords internal
 sb_bout_dist_default <- function(
-  is_sb, is_wear, min_bout, valid_indices, probs
+  is_sb, is_wear, min_bout = 5, valid_indices = NULL,
+  probs = c(
+    0.1, 0.2, 0.25,
+    seq(0.3, 0.7, 0.1),
+    0.75, 0.8, 0.9
+  )
 ) {
 
   ## Determine all SB bouts
@@ -71,15 +77,17 @@ sb_bout_dist_default <- function(
       PAutilities::index_runs(.) %>%
       within({values = as.character(values)}) %>%
       .[.$values=="TRUE TRUE", ] %>%
-      .[.$lengths >= min_bout, ] %>%
-      structure(., row.names = seq(nrow(.))) ## For interactive use
+      .[.$lengths >= min_bout, ]
+
+  ## For interactive use:
+    # if (nrow(bouts) > 0) bouts %<>% structure(., row.names = seq(nrow(.)))
 
   ## If applicable, exclude bouts that overlap with invalid days
   ## Also calculate total wear time
 
     total_weartime_min <- sum(is_wear)
 
-    if (!is.null(valid_indices)) {
+    if (!is.null(valid_indices) & nrow(bouts) > 0) {
 
       bouts %<>%
         nrow(.) %>%
@@ -140,47 +148,28 @@ sb_bout_dist_default <- function(
 #' @inheritParams sb_bout_dist
 #' @keywords internal
 sb_bout_dist_df <- function(
-  df, counts, wear, id, sb, min_bout,
-  valid_indices, probs, simplify
+  df, counts = NULL, wear = NULL, id = NULL, sb = 100,
+  min_bout = 5, valid_indices = NULL, simplify = TRUE,
+  probs = c(
+    0.1, 0.2, 0.25,
+    seq(0.3, 0.7, 0.1),
+    0.75, 0.8, 0.9
+  )
 ) {
 
-  ## Setup
-
-    if (missing(wear)) wear <- NULL
-
-    df %<>%
-      counts_verify(counts) %>%
-      {within(., {
-        valid_index = if (is.null(valid_indices)) {
-          TRUE
-        } else {
-          seq(nrow(.)) %in% valid_indices
-        }
-      })} %>%
-      check_wear_time(id, wear)
-
-  ## Get the bout distributions
-
-    df %<>% lapply(
-      function(x, sb, min_bout, probs) {
-        sb_bout_dist_default(
-          is_sb = x$counts <= sb,
-          is_wear = x$is_wear,
-          min_bout = min_bout,
-          valid_indices = which(x$valid_index),
-          probs = probs
-        )
-      }, sb, min_bout, probs
-    )
-
-  ## Finish up
-
-    if (simplify) {
-      df %<>%
-        do.call(rbind, .) %>%
-        id_bind(id)
-    }
-
-    df
+  df %>%
+  df_check_format(counts, valid_indices, id, wear) %>%
+  lapply(
+    function(x, sb, min_bout, probs) {
+      sb_bout_dist_default(
+        is_sb = x$counts <= sb,
+        is_wear = x$is_wear,
+        min_bout = min_bout,
+        valid_indices = which(x$valid_index),
+        probs = probs
+      )
+    }, sb, min_bout, probs
+  ) %>%
+  id_bind(id, simplify)
 
 }

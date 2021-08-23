@@ -4,33 +4,45 @@
 \alias{sb_bout_dist_default}
 \alias{sb_bout_dist_df}
 \alias{internal_functions}
-\alias{check_wear_time}
-\alias{id_verify}
+\alias{df_check_format}
 \alias{counts_verify}
+\alias{valid_indices_verify}
+\alias{id_wear_time_verify}
+\alias{id_verify}
 \alias{id_bind}
 \title{Functions used internally in the package}
 \usage{
-sb_bout_dist_default(is_sb, is_wear, min_bout, valid_indices, probs)
+sb_bout_dist_default(
+  is_sb,
+  is_wear,
+  min_bout = 5,
+  valid_indices = NULL,
+  probs = c(0.1, 0.2, 0.25, seq(0.3, 0.7, 0.1), 0.75, 0.8, 0.9)
+)
 
 sb_bout_dist_df(
   df,
-  counts,
-  wear,
-  id,
-  sb,
-  min_bout,
-  valid_indices,
-  probs,
-  simplify
+  counts = NULL,
+  wear = NULL,
+  id = NULL,
+  sb = 100,
+  min_bout = 5,
+  valid_indices = NULL,
+  simplify = TRUE,
+  probs = c(0.1, 0.2, 0.25, seq(0.3, 0.7, 0.1), 0.75, 0.8, 0.9)
 )
 
-check_wear_time(df, id, wear)
+df_check_format(df, counts, valid_indices, id, wear)
 
-id_verify(object, id)
+counts_verify(df, counts)
 
-counts_verify(object, counts)
+valid_indices_verify(df, valid_indices)
 
-id_bind(result, id)
+id_wear_time_verify(df, id, wear)
+
+id_verify(df, id)
+
+id_bind(result, id, simplify = TRUE)
 }
 \arguments{
 \item{is_sb}{logical vector reflecting minute-by-minute classifications
@@ -52,7 +64,7 @@ between 0 and 1)}
 \item{df}{data frame of accelerometer input}
 
 \item{counts}{character scalar. Column name of the variable to use when
-classifying sedentary behavior}
+classifying sedentary behavior (and wear time, depending on the function)}
 
 \item{wear}{character scalar [optional]. Column name of the variable to use
 for determining wear time (logical vector with \code{TRUE} for wear time
@@ -69,19 +81,18 @@ will return separate bout objects that can be passed into
 \code{\link{get_profile}}). Setting to \code{TRUE} will return an
 aggregated data frame through \code{rbind} and \code{\link{id_bind}}.}
 
-\item{object}{input (either data frame or output from
-\code{\link{sb_bout_dist}})}
-
-\item{result}{an output data frame that may need id-based formatting}
+\item{result}{output that may need data frame formatting (possibly ID-based)}
 }
 \description{
 Functions used internally in the package
 }
 \details{
-The purpose of \code{check_wear_time} is to determine if the Choi
+The purpose of \code{id_wear_time_verify} is to determine if the Choi
   wear time algorithm needs to be run and, if so, to run it (via
   \code{\link{nhanes_wear}}, with a message). To bypass,
   run \code{df$is_wear <- TRUE} prior to executing
-  \code{check_wear_time(df, id, wear = "is_wear")}
+  \code{id_wear_time_verify(df, id, wear = "is_wear")}.
+
+  \code{df_check_format} is a wrapper that encompasses
 }
 \keyword{internal}

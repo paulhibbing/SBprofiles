@@ -11,11 +11,11 @@ sb_bout_dist(
   min_bout = 5,
   valid_indices = NULL,
   id = NULL,
-  counts,
-  wear,
+  counts = NULL,
+  wear = NULL,
   sb = 100,
-  probs = c(0.1, 0.2, 0.25, seq(0.3, 0.7, 0.1), 0.75, 0.8, 0.9),
-  simplify = TRUE
+  simplify = TRUE,
+  probs = c(0.1, 0.2, 0.25, seq(0.3, 0.7, 0.1), 0.75, 0.8, 0.9)
 )
 }
 \arguments{
@@ -38,7 +38,7 @@ classifications (\code{TRUE} for wearing and \code{FALSE} for not wearing)}
 \code{object} (if a data frame) into a list of separate objects}
 
 \item{counts}{character scalar. Column name of the variable to use when
-classifying sedentary behavior}
+classifying sedentary behavior (and wear time, depending on the function)}
 
 \item{wear}{character scalar [optional]. Column name of the variable to use
 for determining wear time (logical vector with \code{TRUE} for wear time
@@ -47,13 +47,13 @@ the \code{counts} column}
 
 \item{sb}{integer. The cut point to use for classifying sedentary behavior}
 
-\item{probs}{numeric vector. Percentiles to calculate (all values must be
-between 0 and 1)}
-
 \item{simplify}{logical. If passing a data frame, setting to \code{FALSE}
 will return separate bout objects that can be passed into
 \code{\link{get_profile}}). Setting to \code{TRUE} will return an
 aggregated data frame through \code{rbind} and \code{\link{id_bind}}.}
+
+\item{probs}{numeric vector. Percentiles to calculate (all values must be
+between 0 and 1)}
 }
 \value{
 A bout object (data frame of distribution features)

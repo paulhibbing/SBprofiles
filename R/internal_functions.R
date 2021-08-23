@@ -1,18 +1,79 @@
 #' @name internal_functions
 #' @title Functions used internally in the package
-#' @details The purpose of \code{check_wear_time} is to determine if the Choi
+#'
+#' @inheritParams get_profile
+#' @inheritParams sb_bout_dist
+#' @param result output that may need data frame formatting (possibly ID-based)
+#'
+#' @details The purpose of \code{id_wear_time_verify} is to determine if the Choi
 #'   wear time algorithm needs to be run and, if so, to run it (via
 #'   \code{\link{nhanes_wear}}, with a message). To bypass,
 #'   run \code{df$is_wear <- TRUE} prior to executing
-#'   \code{check_wear_time(df, id, wear = "is_wear")}
+#'   \code{id_wear_time_verify(df, id, wear = "is_wear")}.
+#'
+#'   \code{df_check_format} is a wrapper that encompasses
+#'
 #' @keywords internal
 NULL
 
 #' @rdname internal_functions
-#' @inheritParams get_profile
-#' @inheritParams sb_bout_dist
 #' @keywords internal
-check_wear_time <- function(df, id, wear) {
+df_check_format <- function(df, counts, valid_indices, id, wear) {
+
+  df %>%
+  counts_verify(counts) %>%
+  valid_indices_verify(valid_indices) %>%
+  id_wear_time_verify(id, wear)
+
+}
+
+#' @rdname internal_functions
+#' @keywords internal
+counts_verify <- function(df, counts) {
+
+  if (is.null(counts) | missing(counts)) stop(
+    "To run this operation on a data frame, you must pass a value for",
+    "\nthe `counts` argument (character scalar giving the name of the",
+    "\ncolumn on which to operate)", call. = FALSE
+  )
+
+  if (!counts %in% names(df)) {
+
+    stop(
+      "`counts` must be a column name in `df`",
+      call. = FALSE
+    )
+
+  } else {
+
+    stopifnot(sum(names(df) == counts) == 1)
+
+    names(df) %<>% {ifelse(. == counts, "counts", .)}
+
+  }
+
+  df
+
+}
+
+#' @rdname internal_functions
+#' @keywords internal
+valid_indices_verify <- function(df, valid_indices) {
+
+  df %>%
+  {within(., {
+    valid_index = if (is.null(valid_indices)) {
+      TRUE
+    } else {
+      seq(nrow(.)) %in% valid_indices
+    }
+  })}
+
+}
+
+#' @rdname internal_functions
+#' @keywords internal
+id_wear_time_verify <- function(df, id, wear) {
 
   if (is.null(wear) & "is_wear" %in% names(df)) {
     stop(
@@ -58,80 +119,70 @@ check_wear_time <- function(df, id, wear) {
 
 #' @rdname internal_functions
 #' @keywords internal
-id_verify <- function(object, id) {
+id_verify <- function(df, id) {
 
   if (!is.null(id)) {
 
     if (!all(
       is.character(id),
       length(id) == 1,
-      id %in% names(object)
+      id %in% names(df)
     )) {
       stop(
         "id must be a character scalar corresponding",
-        " to a column name in `object`",
+        " to a column name in `df`",
         call. = FALSE
       )
     }
 
-    object %<>%
-      split(object[ ,id]) %>%
+    df %<>%
+      split(df[ ,id]) %>%
       stats::setNames(
         ., sapply(., function(x, id) unique(x[ ,id]), id)
       )
 
   } else {
 
-    object %<>% list(.)
+    df %<>% list(.)
 
   }
 
-  object
+  df
 
 }
 
 #' @rdname internal_functions
 #' @keywords internal
-counts_verify <- function(object, counts) {
+id_bind <- function(result, id, simplify = TRUE) {
 
-  if (!counts %in% names(object)) {
+  ## Step 1 (Stops here if no formatting desired, i.e., simplify = FALSE)
 
-    stop(
-      "`counts` must be a column name in `object`",
-      call. = FALSE
-    )
+    if (!simplify) {
 
-  } else {
+      return(result)
 
-    stopifnot(sum(names(object) == counts) == 1)
+    } else {
 
-    names(object) %<>% {ifelse(. == counts, "counts", .)}
+      result %<>% do.call(rbind, .)
 
-  }
+    }
 
-  object
+  ## Step 2
 
-}
+    if (!is.null(id)) {
 
-#' @rdname internal_functions
-#' @param result an output data frame that may need id-based formatting
-#' @keywords internal
-id_bind <- function(result, id) {
-
-  if (!is.null(id)) {
-
-    data.frame(
-      variable = row.names(result),
-      result,
-      stringsAsFactors = FALSE,
-      row.names = NULL
-    ) %>%
+      data.frame(
+        variable = row.names(result),
+        result,
+        stringsAsFactors = FALSE,
+        row.names = NULL
+      ) %>%
       stats::setNames(., gsub("^variable$", id, names(.)))
 
-  } else {
+    } else {
 
-    result
+      result
 
-  }
+    }
 
 }
