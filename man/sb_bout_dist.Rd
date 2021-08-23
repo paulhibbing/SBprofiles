@@ -61,6 +61,12 @@ A bout object (data frame of distribution features)
 \description{
 Extract features to summarize a participant's bout duration distribution
 }
+\details{
+This function can be used in one of two ways, either 1) by directly
+  providing values for \code{is_sb} and \code{is_wear} (with \code{df =
+  NULL}), or 2) by providing values for \code{df} and \code{counts}
+  (optionally with \code{wear} as well).
+}
 \examples{
 data(example_data, package = "SBprofiles")
 sb_bout_dist(

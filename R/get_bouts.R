@@ -17,6 +17,11 @@
 #' @return A bout object (data frame of distribution features)
 #' @inheritParams get_profile
 #'
+#' @details This function can be used in one of two ways, either 1) by directly
+#'   providing values for \code{is_sb} and \code{is_wear} (with \code{df =
+#'   NULL}), or 2) by providing values for \code{df} and \code{counts}
+#'   (optionally with \code{wear} as well).
+#'
 #' @export
 #'
 #' @examples
