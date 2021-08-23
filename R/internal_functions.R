@@ -1,8 +1,15 @@
-#' Determine if wear time algorithm needs to be run
-#'
-#' If needed, the function will run \code{\link{nhanes_wear}} (with a message).
-#' To bypass, run \code{df$is_wear <- TRUE} prior to executing
-#' \code{check_wear_time(df, id, wear = "is_wear")}
+#' @name internal_functions
+#' @title Functions used internally in the package
+#' @details The purpose of \code{check_wear_time} is to determine if the Choi
+#'   wear time algorithm needs to be run and, if so, to run it (via
+#'   \code{\link{nhanes_wear}}, with a message). To bypass,
+#'   run \code{df$is_wear <- TRUE} prior to executing
+#'   \code{check_wear_time(df, id, wear = "is_wear")}
+#' @keywords internal
+NULL
+
+#' @rdname internal_functions
+
 #'
 #' @param df data frame of accelerometer input
 #' @inheritParams get_profile
