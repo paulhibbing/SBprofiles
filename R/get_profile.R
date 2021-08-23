@@ -1,5 +1,3 @@
-# Generic and methods -----------------------------------------------------
-
 #' Implement the sedentary profiles
 #'
 #' @param object input (either data frame or output from
@@ -70,7 +68,8 @@ get_profile.bout <- function(
     method,
     "both" = both,
     "decisionTree" = dt,
-    "randomForest" = rf
+    "randomForest" = rf,
+    NULL
   )
 
 }
@@ -79,28 +78,35 @@ get_profile.bout <- function(
 #' @param id character scalar (optional). Column name on which to divide
 #'   \code{object} (if a data frame) into a list of separate objects
 #' @param counts character scalar. Column name of the variable to use when
-#'   classifying sedentary behavior
+#'   classifying sedentary behavior (and wear time, depending on the function)
+#' @param wear character scalar [optional]. Column name of the variable to use
+#'   for determining wear time (logical vector with \code{TRUE} for wear time
+#'   minutes). If no value is provided, \code{\link{nhanes_wear}} is invoked on
+#'   the \code{counts} column
 #' @param sb integer. The cut point to use for classifying sedentary behavior
+#' @param valid_indices integer vector (optional) specifying which indices of
+#'   \code{is_sb} and {is_wear} correspond to valid measurement days (e.g. with
+#'   10+ hours of wear time on 4+ days)
 #' @export
-get_profile.data.frame = function(
+get_profile.data.frame <- function(
   object, method = c("both", "decisionTree", "randomForest"),
-  id = NULL, counts, sb = 100, ...
+  id = NULL, counts = NULL, wear = NULL, sb = 100, valid_indices = NULL, ...
 ) {
 
   method <- match.arg(method)
 
-  object %<>%
-    counts_verify(counts) %>%
-    id_verify(id)
-
-  lapply(object, function(x, sb, ...) {
-      sb_bout_dist(
-        df = NULL,
-        is_sb = x$counts <= sb,
-        is_wear = nhanes_wear(x$counts),
-        ...
-      )
-    }, sb, ...) %>%
+  object %>%
+  df_check_format(counts, valid_indices, id, wear) %>%
+  lapply(
+    function(x, sb, ...) {sb_bout_dist(
+      df = NULL,
+      is_sb = x$counts <= sb,
+      is_wear = x$is_wear,
+      valid_indices = which(x$valid_index),
+      ...
+    )},
+    sb, ...
+  ) %>%
   lapply(get_profile, method) %>%
   lapply(function(x, method) {
     if (length(x) > 1)
@@ -108,87 +114,29 @@ get_profile.data.frame = function(
     else
       stats::setNames(data.frame(x), method)
   }, method) %>%
-  do.call(rbind, .) %>%
   id_bind(id)
 
 }
 
-# Helper functions ---------------------------------------------------------
+#' @rdname get_profile
+#' @export
+get_profile.list <- function(
+  object, method = c("both", "decisionTree", "randomForest"), ...
+) {
 
-#' @rdname internal_functions
-#' @keywords internal
-id_verify <- function(object, id) {
+  stopifnot(sapply(object, inherits, c("bout1", "bout5")))
+  method <- match.arg(method)
 
-  if (!is.null(id)) {
+  object %<>% lapply(get_profile, method = method)
 
-    if (!all(
-      is.character(id),
-      length(id) == 1,
-      id %in% names(object)
-    )) {
-      stop(
-        "id must be a character scalar corresponding",
-        " to a column name in `object`",
-        call. = FALSE
-      )
-    }
-
-    object %<>%
-      split(object[ ,id]) %>%
-      stats::setNames(
-        ., sapply(., function(x, id) unique(x[ ,id]), id)
-      )
-
+  if (method == "both") {
+    object %>%
+    lapply(c, stringsAsFactors = FALSE) %>%
+    lapply(do.call, what = data.frame) %>%
+    do.call(rbind, .) %>%
+    as.list(.)
   } else {
-
-    object %<>% list(.)
-
-  }
-
-  object
-
-}
-
-#' @rdname internal_functions
-#' @keywords internal
-counts_verify <- function(object, counts) {
-
-  if (!counts %in% names(object)) {
-
-    stop(
-      "`counts` must be a column name in `object`",
-      call. = FALSE
-    )
-
-  } else {
-
-    names(object) %<>% {ifelse(. == counts, "counts", .)}
-
-  }
-
-  object
-
-}
-
-#' @rdname internal_functions
-#' @param result an output data frame that may need id-based formatting
-#' @keywords internal
-id_bind <- function(result, id) {
-
-  if (!is.null(id)) {
-
-    data.frame(
-      variable = row.names(result),
-      result,
-      stringsAsFactors = FALSE,
-      row.names = NULL
-    ) %>%
-    stats::setNames(., gsub("^variable$", id, names(.)))
-
-  } else {
-
-    result
-
+    unlist(object, use.names = FALSE)
   }
 
 }

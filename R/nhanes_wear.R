@@ -3,7 +3,7 @@
 #' This is a wrapper around \code{PhysicalActivity::wearingMarking} that takes
 #' into account the non-POSIX formatting of NHANES timestamps
 #'
-#' @param counts vector of count values (minute-by-minute)
+#' @inheritParams get_profile
 #'
 #' @return a vector of wear time information (\code{TRUE} means wearing and
 #'   \code{FALSE} means not wearing)

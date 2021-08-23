@@ -20,7 +20,7 @@ Sys.setenv(`_R_S3_METHOD_REGISTRATION_NOTE_OVERWRITES_` = "false")
 
 # Introduction
 
-The main purpose of this vignette is to show you how to use the sedentary profiles. I have tried to write it as non-technically as possible, in recognition that most people are not R programmers, and many are not coders at all. That said, the profiles were created in R, and they need to be implemented in R. So I will not be able to avoid technical talk altogether. If you feel anything could be clearer, you are probably not alone. Please reach out on the Issues page (https://github.com/paulhibbing/SBprofiles/issues) and let me know what doesn't work or doesn't make sense. Others will thank you, and I will too!
+The main purpose of this vignette is to show you how to use the sedentary profiles. I have tried to write it as non-technically as possible, in recognition that most people are not R programmers, and many are not coders at all. That said, the profiles were created in R, and they need to be implemented in R. So I will not be able to avoid technical talk altogether. If you feel anything could be clearer, you are probably not alone. Please reach out on the Issues page (https://github.com/paulhibbing/SBprofiles/issues) and let me know what doesn't work or doesn't make sense. Others will thank you, and so will I!
 
 Before you proceed with the vignette, you will need to install the following free programs, if you haven't already:
 
@@ -34,7 +34,7 @@ You can also set up a profile on GitHub (https://github.com/join). This is optio
 
 # Setting up the Code
 
-Once you have R, you need to get a copy of the SBprofiles code. You can do that in several ways, but I am going to focus on the easiest one. Simply open RStudio, paste the below code into your console, and press enter. If the code doesn't work, let me know. The most likely causes are 1) failure of dependencies to install, or 2) poor cross-platform coding. (The package was written using Windows 10 and may run into issues on other operating systems.) There's also a chance your system won't like this vignette, which gets lumped into the installation with all the code and everything else. Regardless, please let me know so I can find a solution.
+Once you have R, you need to get a copy of the SBprofiles code. You can do that in several ways, but I am going to focus on the easiest one. Simply open RStudio, paste the below code into your console, and press enter. If the code doesn't work, let me know. The most likely causes are 1) failure of dependencies to install, 2) problems with building this vignette, or 3) poor cross-platform coding. (The package was written using Windows 10 and may run into issues on other operating systems.)
 
 ```{r install, eval=FALSE}
 
@@ -44,7 +44,10 @@ remotes::install_github("paulhibbing/SBprofiles")
 
 
 
-## If the above doesn't work, try the below. One or both of these extra arguments might help
+
+
+## If the above doesn't work, try the below.
+## One or both of these extra arguments might help
 
 remotes::install_github(
   repo = "paulhibbing/SBprofiles",
@@ -79,15 +82,16 @@ Before we go further, you may want to familiarize yourself with the main functio
 
 ```
 
-From here, let's see how we would determine the sedentary profile for the data we loaded earlier. It ends up being fairly easy. All we have to do is run the following command:
+From here, let's see how we would determine the sedentary profile for the data we loaded earlier. It ends up being fairly easy. All we have to do is run the command below. Note that the program tells us it's calculating non-wear using the Choi algorithm. This will be done automatically unless you tell it you have already run a non-wear algorithm. To do that, just tell it where the information is stored by passing a value for the 'wear' argument. (See the commented line below. In this case, that line would throw an error because we have not created a variable called 'is_wear' -- We could have done so using the 'nhanes_wear' function. You'll see that function pop up in a couple of future snippets; it's very easy to use.)
 
 ```{r bouts, cache=TRUE}
 
 SBprofiles::get_profile(
   object = example_data, ## Give it the data you want to evaluate
   method = "both", ## Can be 'decisionTree', 'randomForest', or 'both'
-  id = NULL, ## This could name a stratifying variable if applicable
+  id = NULL, ## This could name a stratifying variable, if applicable
   counts = "PAXINTEN", ## Name the activity counts variable
+  #wear = "is_wear", ## Name the wear time variable (TRUE for wear time, else FALSE)
   sb = 100, ## Provide the SB cut point
   min_bout = 1, ## Minimum bout length. Must be 1 or 5
   valid_indices = NULL ## Optional vector of indices that meet wear time criteria
@@ -103,7 +107,7 @@ Let's change the settings to illustrate how else this could work.
 ## analysis, you might use this approach to specify which rows occurred on days
 ## that have 10+ hours of wear time. (Notably, the `get_profile` function does
 ## test for wear time internally, but it does not check for the extra criteria
-## like daily wear requirements)
+## like daily wear requirements -- that's up to you to take care of beforehand)
 
 valid_indices <- sample(
   seq(nrow(example_data)), 8000
@@ -121,7 +125,7 @@ SBprofiles::get_profile(
 
 ```
 
-So there you go! You have now determined the sedentary profile for one participant (or several, if you have cleverly used the `id` argument). You can close this vignette if that's all you need. However, there are a few other topics you may find useful for supplementary analysis and work. That's what the rest of the vignette will cover.
+So there you go! You now know how to determine the sedentary profile for one participant (or several, if you cleverly use the `id` argument). You can close this vignette if that's all you need. However, there are a few other topics you may find useful for supplementary analysis and work. That's what the rest of the vignette will cover.
 
 # Retrieving the bout distribution
 
@@ -130,6 +134,7 @@ When we used the `get_profile` function, R took care of the whole profiling proc
 ## 1) By directly providing information for one person
 
 ```{r dist, cache=TRUE}
+
 
 SBprofiles::sb_bout_dist(
   is_sb = example_data$PAXINTEN <= 100, ## SB cut point
@@ -154,9 +159,11 @@ SBprofiles::sb_bout_dist(
 
 # After retrieving the bout distribution
 
-If we manually run `sb_bout_dist`, we can feed the output directly into `get_profile`. This allows us to look at both the bout distribution and the sedentary profile, although it does mean we have to do two steps instead of one. For right now, this two-step process only works if `sb_bout_dist` is used according to option #1 above. Implementing it with our example data would look like this:
+If we manually run `sb_bout_dist`, we can feed the output directly into `get_profile`. This allows us to look at both the bout distribution and the sedentary profile, although it does mean we have to do two steps instead of one. Using our example data, we could implement this two-step process like so:
 
-```{r twostep, cache=TRUE}
+## Method 1 above
+
+```{r twostep1, cache=TRUE}
 
 bout_info <- SBprofiles::sb_bout_dist(
   is_sb = example_data$PAXINTEN <= 100,
@@ -166,6 +173,25 @@ bout_info <- SBprofiles::sb_bout_dist(
 profile <- SBprofiles::get_profile(bout_info)
 ## (We can get more sophisticated output if we add extra settings
 ## like we did before, but this is fine for now)
+
+print(profile)
+
+```
+
+## Method 2 above
+
+```{r twostep2, cache=TRUE}
+
+bout_info <- SBprofiles::sb_bout_dist(
+  df = example_data,
+  min_bout = 1,
+  id = "PAXDAY",
+  counts = "PAXINTEN",
+  sb = 100,
+  simplify = FALSE ##<-- This is critical
+)
+
+profile <- SBprofiles::get_profile(bout_info, method = "randomForest")
 
 print(profile)
 
@@ -209,27 +235,24 @@ Before wrapping up, let's address how you can get your own data into R, and how 
       TimeStamp = as.character(Timestamp)
     }) %>%
     
-    
     ## Now run the algorithm
     PhysicalActivity::wearingMarking(
       perMinuteCts = 1, TS = "TimeStamp", cts = "Axis1",
       newcolname = "is_wear", getMinuteMarking = TRUE
     ) %>%
+  
+    ## Format the wear time variable to a logical vector
+    within({
+      is_wear = is_wear %in% "w" ## use %in% rather than == because of how it handles NA
+    }) %>%
     
     ## Get the sedentary profile
     cbind(., SBprofiles::get_profile(
-      ., counts = "Axis1", method = "decisionTree"
+      ., counts = "Axis1", wear = "is_wear", method = "decisionTree"
     )) %>%
-
+  
     ## Take the `TimeStamp` variable back out
     .[ ,names(.) != "TimeStamp"] %>%
-    
-    ## Convert the `is_wear` variable to logical
-    within({
-      is_wear = ifelse(
-        as.character(is_wear) == "nw", FALSE, TRUE
-      )
-    }) %>%
     
     ## Rename the sedentary profile variable from 'decisionTree' to 'SB_profile'
     stats::setNames(., gsub("^decisionTree$", "SB_profile", names(.)))

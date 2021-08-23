@@ -2,6 +2,7 @@
 
 S3method(get_profile,bout)
 S3method(get_profile,data.frame)
+S3method(get_profile,list)
 export(get_profile)
 export(nhanes_wear)
 export(sb_bout_dist)

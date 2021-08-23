@@ -27,7 +27,9 @@
     )
   }
 
-  # example_data <- readRDS("data-raw/example.rds")
+  # example_data <-
+  #   readRDS("data-raw/example.rds") %>%
+  #   structure(., row.names = seq(nrow(.)))
   # usethis::use_data(example_data, overwrite = TRUE)
 
 # Models ------------------------------------------------------------------

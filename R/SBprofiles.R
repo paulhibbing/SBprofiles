@@ -1,5 +1,5 @@
 if(getRversion() >= "2.15.1") utils::globalVariables(c(
-  ".", "n_SB_bouts", "total_SB_min", "total_weartime_min"
+  ".", "n_SB_bouts", "total_SB_min", "total_weartime_min", "valid_index"
 ))
 
 #' Learn about and use sedentary behavior profiles

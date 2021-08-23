@@ -7,7 +7,8 @@
 nhanes_wear(counts)
 }
 \arguments{
-\item{counts}{vector of count values (minute-by-minute)}
+\item{counts}{character scalar. Column name of the variable to use when
+classifying sedentary behavior (and wear time, depending on the function)}
 }
 \value{
 a vector of wear time information (\code{TRUE} means wearing and
