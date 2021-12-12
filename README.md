@@ -1,4 +1,4 @@
-# Welcome to the SBprofiles repository
+# Welcome to the SBprofiles repository, a companion to our [paper in MSSE](https://journals.lww.com/acsm-msse/Abstract/9000/Sedentary_Profiles__A_New_Perspective_on.95921.aspx)
 
 There are two things going on here:
 
