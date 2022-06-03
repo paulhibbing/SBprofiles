@@ -7,8 +7,11 @@ There are two things going on here:
   [manuscript_code directory](https://github.com/paulhibbing/SBprofiles/tree/main/manuscript_code).
 
 2. **Usage help:** The rest of this repository is set up as an R package to help
-  you if you want to use the profiles yourself. We've given full information and
-  instructions in the [vignette](https://github.com/paulhibbing/SBprofiles/blob/main/vignettes/SBprofiles.pdf).
+  you if you want to use the profiles yourself. However, we now recommend you
+  do this through the [PBpatterns](https://github.com/paulhibbing/PBpatterns)
+  package. We have migrated the content to that package (including the helpful
+  [vignette](https://github.com/paulhibbing/PBpatterns/blob/main/vignettes/SBprofiles.pdf))
+  and expect it to have a more permanent home there.
   
 # Attribution
 
